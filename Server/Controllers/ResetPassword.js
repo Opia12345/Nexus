@@ -29,7 +29,7 @@ exports.PasswordReset = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
     existingUser.otp = otp;
     existingUser.otpExpiration = Date.now() + 3 * 60 * 1000;
@@ -38,29 +38,30 @@ exports.PasswordReset = async (req, res) => {
 
     const mailOptions = {
       to: Email,
-      subject: "Password Reset Request",
+      subject: "Nexus Bank: Password Reset Request",
       html: `
-      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background: white; color: #333; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
       <tr>
-          <td align="center" bgcolor="#000000">
-              <img src="cid:logo" alt="Logo" style="width: 100%; display: block;">
+          <td align="center" style="background-color: #004080; padding: 20px 0;">
+              <img src="cid:logo" alt="Nexus Bank Logo" style="width: 150px; display: block;">
           </td>
       </tr>
       <tr>
           <td style="padding: 40px;">
-              <h3 style="margin-top: 0;">Hello ${existingUser.userName} 👋,</h3>
-              <p>We received a request to reset your password. Please use the following OTP to reset your password. This OTP is valid for 3 minutes:</p>
-              <h2 style="display: flex; align-items: center; justify-content: center; font-size: 44px;">${otp}</h2>
-              <p>If you did not request a password reset, you can safely ignore this email.</p>
-              
+              <h3 style="color: #004080; margin-top: 0;">Dear ${existingUser.FirstName},</h3>
+              <p>We have recieved your request to reset your password. Use the OTP below to do so as it expires in three minuts:</p>
+              <h2 style="display:flex; justify-content: center; align-items: center; font-size: 40px; color: #004080;">${otp}</h2>
+
+              <p>If you did not request this change, please ignore this email.</p>
+              <p>For your security, please ensure that your account information remains confidential and regularly update your password.</p>
+              <p>Thank you for being a valued member of Nexus Bank.</p>
               <p>Best regards,<br />
-              CEO,<br />
-           Anthony Pascal. <br /></p>
-           <hr>
-           <p style="text-align: center; font-size: 12px; color: #444;"> © 2024, All rights reserved.<br>You are receiving this email because you signed up on our platform</p>
-       </td>
-          </tr>
-        </table>
+                 The Nexus Bank Team</p>
+              <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
+              <p style="text-align: center; font-size: 12px; color: #666;">&copy; 2024 Nexus Bank. All rights reserved.<br>You are receiving this email because you signed up on our platform.</p>
+          </td>
+      </tr>
+  </table>
       `,
       attachments: [
         {

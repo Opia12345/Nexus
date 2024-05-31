@@ -13,10 +13,6 @@ const ResendOTP = require("./Controllers/ResendOTP");
 const OTPConfirmation = require("./Controllers/OTPConfirmation");
 const logout = require("./Controllers/Logout");
 const Delete = require("./Controllers/Delete");
-const App = require("./Controllers/App");
-const updateUsername = require("./Controllers/UpdateUsername");
-const allApps = require("./Controllers/AllApps");
-const DeleteApp = require("./Controllers/DeleteApps");
 require("dotenv").config();
 
 // CONFIGURATIONS
@@ -38,17 +34,11 @@ app.post("/signin", signIn.signIn);
 app.post("/logout", logout.logout);
 app.delete(`/users/delete/:userId`, Delete.Delete);
 app.patch(`/email-update/:userId`, updateEmail.updateEmail);
-app.patch(`/username-update/:userId`, updateUsername.updateUsername);
 app.patch(`/password-update/:userId`, updatePassword.updatePassword);
 app.post("/passwordReset", PasswordReset.PasswordReset);
 app.post("/resend-verification/:userId", resendVerification.resendVerification);
 app.post("/resend-OTP/:userId", ResendOTP.ResendOTP);
 app.post("/OTPConfirmation", OTPConfirmation.OTPConfirmation);
-
-// APP ENDPOINTS
-app.post("/create-app", App.App);
-app.get("/apps", allApps.allApps);
-app.delete(`/delete-app/:userId`, DeleteApp.DeleteApp);
 
 // WILDCARD ROUTE
 app.get("*", (req, res) => {

@@ -130,6 +130,7 @@ exports.Register = async (req, res) => {
                   <li><strong>Explore Features:</strong> Discover our range of banking services, including online transfers, bill payments, and more.</li>
                   <li><strong>Stay Secure:</strong> Enable two-factor authentication for added security and regularly update your password.</li>
               </ol>
+              <p>Please note that your User ID cannot be reset. Make sure to keep it confidential and safe.</p>
               <p>If you have any questions or need assistance, our customer support team is here to help. You can reach us at chinyereozoemelam2@gmail.com or call us at +234 817 079 5643.</p>
               <p>Thank you for choosing Nexus Bank. We look forward to serving you!</p>
               <p>Best regards,<br />
@@ -139,7 +140,6 @@ exports.Register = async (req, res) => {
           </td>
       </tr>
   </table>
-  
          `,
       attachments: [
         {
