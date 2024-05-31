@@ -49,6 +49,7 @@ exports.signIn = async (req, res) => {
 
     const response = {
       message: "Sign in successful",
+      userID,
       userId: existingUser._id,
       token,
       userName: existingUser.userName,
