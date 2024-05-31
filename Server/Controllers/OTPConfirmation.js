@@ -11,11 +11,7 @@ exports.OTPConfirmation = async (req, res) => {
     await Validation.validate({ otp }, { abortEarly: false });
     const existingUser = await User.findOne({ otp });
 
-    if (!existingUser) {
-      return res.status(404).json({ error: "Invalid OTP!" });
-    }
-
-    if (existingUser.otpExpiration - Date.now() > 3 * 60 * 1000) {
+    if (!existingUser || Date.now() > existingUser.otpExpiration) {
       return res.status(400).json({ error: "OTP has expired!" });
     }
 

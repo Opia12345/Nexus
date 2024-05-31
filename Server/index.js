@@ -12,7 +12,9 @@ const resendVerification = require("./Controllers/ResendVerification");
 const ResendOTP = require("./Controllers/ResendOTP");
 const OTPConfirmation = require("./Controllers/OTPConfirmation");
 const logout = require("./Controllers/Logout");
+const PassKey = require("./Controllers/PassKey");
 const Delete = require("./Controllers/Delete");
+const KeyAuthorization = require("./Controllers/KeyAuthorization");
 require("dotenv").config();
 
 // CONFIGURATIONS
@@ -37,6 +39,8 @@ app.patch(`/email-update/:userId`, updateEmail.updateEmail);
 app.patch(`/password-update/:userId`, updatePassword.updatePassword);
 app.post("/passwordReset", PasswordReset.PasswordReset);
 app.post("/resend-verification/:userId", resendVerification.resendVerification);
+app.post("/pass-key/:userId", PassKey.PassKey);
+app.post("/authorize", KeyAuthorization.KeyAuthorization);
 app.post("/resend-OTP/:userId", ResendOTP.ResendOTP);
 app.post("/OTPConfirmation", OTPConfirmation.OTPConfirmation);
 

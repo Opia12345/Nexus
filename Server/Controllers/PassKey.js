@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const { User } = require("../Models/User");
-const yup = require("yup");
+const crypto = require("crypto");
 
 // NODEMAILER
 const transporter = nodemailer.createTransport({
@@ -11,34 +11,31 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const Validation = yup.object().shape({
-  Email: yup
-    .string()
-    .email("Please use a valid email address")
-    .required("Email is required"),
-});
+// FUNCTION TO GENERATE A SECURE COMPLEX PASSKEY
+const generatePasskey = (length) => {
+  return crypto.randomBytes(length).toString("hex");
+};
 
-exports.PasswordReset = async (req, res) => {
-  const { Email } = req.body;
+exports.PassKey = async (req, res) => {
+  const { userId } = req.params;
 
   try {
-    await Validation.validate({ Email }, { abortEarly: false });
-    const existingUser = await User.findOne({ Email });
+    const existingUser = await User.findOne({ _id: userId });
 
     if (!existingUser) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    const passkey = generatePasskey(4);
 
-    existingUser.otp = otp;
-    existingUser.otpExpiration = Date.now() + 2 * 60 * 1000;
+    existingUser.PassKey = passkey;
+    existingUser.passkeyExpiration = Date.now() + 2 * 60 * 1000;
 
     await existingUser.save();
 
     const mailOptions = {
-      to: Email,
-      subject: "Nexus Bank: Password Reset Request",
+      to: existingUser.Email,
+      subject: "Nexus Bank: Transfer Authorization",
       html: `
       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background: white; color: #333; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
       <tr>
@@ -49,14 +46,12 @@ exports.PasswordReset = async (req, res) => {
       <tr>
           <td style="padding: 40px;">
               <h3 style="color: #004080; margin-top: 0;">Dear ${existingUser.FirstName},</h3>
-              <p>We have recieved your request to reset your password. Use the OTP below to do so as it expires in three minuts:</p>
-              <h2 style="display:flex; justify-content: center; align-items: center; font-size: 40px; color: #004080;">${otp}</h2>
-
-              <p>If you did not request this change, please ignore this email.</p>
+              <p>We have received a transfer request for your Nexus account associated with this email. Here is your passkey:</p>
+              <h2 style="display:flex; justify-content: center; align-items: center; font-size: 40px; color: #004080;">${passkey}</h2>
+              <p>If you do not authorize this transfer, please contact our customer support team immediately at chinyereozoemelam2@gmail.com or call us at +234 817 079 5643.</p>
               <p>For your security, please ensure that your account information remains confidential and regularly update your password.</p>
               <p>Thank you for being a valued member of Nexus Bank.</p>
-              <p>Best regards,<br />
-                 The Nexus Bank Team</p>
+              <p>Best regards,<br />The Nexus Bank Team</p>
               <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
               <p style="text-align: center; font-size: 12px; color: #666;">&copy; 2024 Nexus Bank. All rights reserved.<br>You are receiving this email because you signed up on our platform.</p>
           </td>
@@ -72,19 +67,19 @@ exports.PasswordReset = async (req, res) => {
       ],
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporter.sendMail(mailOptions, async (error, info) => {
       if (error) {
-        console.log("Error sending mail ", error);
+        console.log("Error sending mail", error);
         return res.status(500).json({ error: "Error sending email" });
       } else {
         console.log("Email sent: " + info.response);
         setTimeout(async () => {
-          existingUser.otp = null;
-          existingUser.otpExpiration = null;
+          existingUser.PassKey = null;
+          existingUser.passkeyExpiration = null;
           await existingUser.save();
-        }, 3 * 60 * 1000);
+        }, 3 * 60 * 1000); // Clear passkey after 3 minutes
         res.status(200).json({
-          message: "Password reset email sent",
+          message: "Authorization email sent",
           userId: existingUser._id,
         });
       }

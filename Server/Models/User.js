@@ -30,6 +30,15 @@ const userSchema = new Schema(
     accountNumber: {
       type: Number,
     },
+    PassKey: {
+      type: String,
+    },
+    otpExpiration: {
+      type: Number,
+    },
+    passkeyExpiration: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );
