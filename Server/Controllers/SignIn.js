@@ -4,7 +4,7 @@ const yup = require("yup");
 const jwt = require("jsonwebtoken");
 
 const Validation = yup.object().shape({
-  userId: yup.string().required("User ID is required"),
+  userID: yup.string().required("User ID is required"),
   Password: yup
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -18,15 +18,15 @@ const createToken = (id) => {
 };
 
 exports.signIn = async (req, res) => {
-  const { userId, Password } = req.body;
+  const { userID, Password } = req.body;
 
   try {
     const validationSchema = Validation;
     await validationSchema.validate(
-      { userId, Password },
+      { userID, Password },
       { abortEarly: false }
     );
-    const existingUser = await User.findOne({ userId });
+    const existingUser = await User.findOne({ userID });
 
     if (!existingUser) {
       return res.status(404).json({ error: "User not found" });
