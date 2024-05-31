@@ -4,10 +4,7 @@ const yup = require("yup");
 const jwt = require("jsonwebtoken");
 
 const Validation = yup.object().shape({
-  Email: yup
-    .string()
-    .email("Please use a valid email address")
-    .required("Email is required"),
+  userId: yup.string().required("User ID is required"),
   Password: yup
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -21,12 +18,15 @@ const createToken = (id) => {
 };
 
 exports.signIn = async (req, res) => {
-  const { Email, Password } = req.body;
+  const { userId, Password } = req.body;
 
   try {
     const validationSchema = Validation;
-    await validationSchema.validate({ Email, Password }, { abortEarly: false });
-    const existingUser = await User.findOne({ Email });
+    await validationSchema.validate(
+      { userId, Password },
+      { abortEarly: false }
+    );
+    const existingUser = await User.findOne({ userId });
 
     if (!existingUser) {
       return res.status(404).json({ error: "User not found" });
@@ -39,8 +39,7 @@ exports.signIn = async (req, res) => {
     }
 
     // Create the token and set the cookie before sending the initial response.
-    const userId = existingUser._id;
-    const token = createToken(userId);
+    const token = createToken(existingUser._id);
     res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 5 * 24 * 60 * 60 * 1000,
@@ -50,7 +49,7 @@ exports.signIn = async (req, res) => {
 
     const response = {
       message: "Sign in successful",
-      userId,
+      userId: existingUser._id,
       token,
       userName: existingUser.userName,
       userEmail: existingUser.Email,

@@ -6,7 +6,7 @@ const { User } = require("../Models/User");
 const yup = require("yup");
 require("dotenv").config();
 
-//NODEMAILER
+// NODEMAILER
 const transporter = nodemailer.createTransport({
   service: process.env.MAIL_SERVICE,
   auth: {
@@ -28,6 +28,25 @@ const Validation = yup.object().shape({
     .required("Password is required"),
 });
 
+function generateUserId() {
+  let userID = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 10; i++) {
+    userID += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return userID;
+}
+
+function generateAccountNumber() {
+  let accountNumber = "";
+  const digits = "0123456789";
+  for (let i = 0; i < 10; i++) {
+    accountNumber += digits.charAt(Math.floor(Math.random() * digits.length));
+  }
+  return accountNumber;
+}
+
 exports.Register = async (req, res) => {
   const { LastName, FirstName, Email, Password } = req.body;
 
@@ -38,7 +57,7 @@ exports.Register = async (req, res) => {
       { abortEarly: false }
     );
 
-    //CHECK FOR EXISTING USERS
+    // CHECK FOR EXISTING USERS
     const existingMail = await User.findOne({ Email });
 
     if (existingMail) {
@@ -48,43 +67,35 @@ exports.Register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(Password, saltRounds);
+    const userID = generateUserId();
+    const newAccountNumber = generateAccountNumber();
 
     const newUser = new User({
       LastName,
       FirstName,
       Email,
       Password: hashedPassword,
+      userID: userID,
+      accountNumber: newAccountNumber,
     });
 
-    const userId = newUser._id;
-
-    const refreshToken = jwt.sign({ userId }, process.env.JWTSECRET, {
-      expiresIn: "3m",
-    });
+    const refreshToken = jwt.sign(
+      { userId: newUser._id },
+      process.env.JWTSECRET,
+      {
+        expiresIn: "3m",
+      }
+    );
 
     newUser.resetToken = refreshToken;
     newUser.resetTokenExpiration = Date.now() + 3 * 60 * 1000;
 
     await newUser.save();
 
-    function generateAccountNumber() {
-      let accountNumber = "";
-      const digits = "0123456789";
-      for (let i = 0; i < 10; i++) {
-        accountNumber += digits.charAt(
-          Math.floor(Math.random() * digits.length)
-        );
-      }
-      return accountNumber;
-    }
-
-    const newAccountNumber = generateAccountNumber();
-
     const verificationLink = `${process.env.BASE_URL}/emailConfirmed?token=${refreshToken}`;
 
     const response = {
       message: "User created successfully",
-      userId,
       newAccountNumber,
     };
 
@@ -107,7 +118,7 @@ exports.Register = async (req, res) => {
               <p>Here are your account details:</p>
               <ul style="list-style-type: none; padding: 0;">
                   <li><strong>Account Number:</strong> ${newAccountNumber}</li>
-                  <li><strong>User ID:</strong> ${userId}</li>
+                  <li><strong>User ID:</strong> ${userID}</li>
               </ul>
               <p>You can log in to your account using the following link:</p>
               <p style="text-align: center;">
@@ -155,7 +166,7 @@ exports.Register = async (req, res) => {
       console.error(err);
       res
         .status(500)
-        .json({ error: "An error occured, please try again later" });
+        .json({ error: "An error occurred, please try again later" });
     }
   }
 };

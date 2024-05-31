@@ -24,6 +24,12 @@ const userSchema = new Schema(
     otp: {
       type: Number,
     },
+    userID: {
+      type: String,
+    },
+    accountNumber: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );
