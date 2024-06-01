@@ -1,4 +1,5 @@
 import {
+  faChevronRight,
   faIdCard,
   faQuestion,
   faQuestionCircle,
@@ -29,9 +30,12 @@ const Account = () => {
 
         <div className="grid md:grid-cols-2 grid-cols-1 mt-8 gap-4">
           <div>
-            <div className="border rounded-md p-2 flex items-center gap-4 cursor-pointer">
-              <FontAwesomeIcon icon={faUserAlt} />
-              <h1>Account Settings</h1>
+            <div className="border rounded-md p-2 flex items-center gap-4 justify-between cursor-pointer">
+              <div className="flex items-center gap-4">
+                <FontAwesomeIcon icon={faUserAlt} />
+                <h1>Account Settings</h1>
+              </div>
+              <FontAwesomeIcon icon={faChevronRight} />
             </div>
             <div className="border rounded-md p-2 flex items-center gap-4 mt-4 cursor-pointer">
               <FontAwesomeIcon icon={faIdCard} />
@@ -44,8 +48,8 @@ const Account = () => {
               <FontAwesomeIcon icon={faQuestionCircle} />
               <h1>Help</h1>
             </div>
-            <div className="border rounded-md p-2 flex items-center gap-4 mt-4 cursor-pointer">
-              <FontAwesomeIcon className="text-red-500" icon={faSignOutAlt} />
+            <div className="border rounded-md p-2 flex items-center text-red-500 gap-4 mt-4 cursor-pointer">
+              <FontAwesomeIcon icon={faSignOutAlt} />
               <h1>Logout</h1>
             </div>
           </div>
