@@ -4,11 +4,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        greenBlue: "#2364AA",
-        pictionBlue: "#3DA5D9",
-        verdigris: "#73BFB8",
-        mikadoYellow: "#FEC601",
-        pumpkin: "#EA7317",
+        greenBlue: "#0267C1",
+        frenchBlue: "#0075C4",
+        gamboge: "#EFA00B",
+        SRO: "#D65108",
+        sealBrown: "#591F0A",
       },
     },
   },

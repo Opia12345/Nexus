@@ -44,7 +44,7 @@ const Sidenav = () => {
     <>
       {!mobile && (
         <>
-          <nav className="w-[250px] h-screen py-10 bg-slate-200/5 backdrop-blur-md  bg-greenBlue text-white z-50 fixed left-0 top-0 p-8 flex flex-col justify-between">
+          <nav className="w-[250px] h-screen py-10 bg-greenBlue text-white z-50 fixed left-0 top-0 p-8 flex flex-col justify-between">
             <div className="">
               <div className="flex gap-4 justify-center items-center mb-8">
                 <img src="/logo.png" alt="" />
@@ -111,7 +111,7 @@ const Sidenav = () => {
 
       {mobile && (
         <>
-          <nav className="h-[70px] bg-slate-200/5 backdrop-blur-md  bg-greenBlue text-white z-50 w-full fixed left-0 bottom-0 p-2">
+          <nav className="h-[70px] bg-greenBlue text-white z-50 w-full fixed left-0 bottom-0 p-2">
             <div className="flex items-center justify-center gap-8">
               <span
                 onClick={() => handleLinkClick("/")}
