@@ -1,19 +1,13 @@
 import {
-  faBarsStaggered,
-  faCircleQuestion,
-  faGear,
   faHomeAlt,
-  faKey,
-  faLock,
+  faMoneyBillTransfer,
   faPiggyBank,
   faPowerOff,
-  faTimes,
   faUserAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
-import { CSSTransition } from "react-transition-group";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidenav = () => {
   const [activeLink, setActiveLink] = useState(null);
@@ -77,6 +71,20 @@ const Sidenav = () => {
                 </span>
               </NavLink>
 
+              <NavLink to="/transfer">
+                <span
+                  onClick={() => handleLinkClick("/transfer")}
+                  className={`cursor-pointer p-2 ${
+                    activeLink === "/transfer"
+                      ? "border-s bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
+                >
+                  <FontAwesomeIcon icon={faMoneyBillTransfer} />
+                  <h5>Transfers</h5>
+                </span>
+              </NavLink>
+
               <NavLink to="/account">
                 <span
                   onClick={() => handleLinkClick("/account")}
@@ -134,6 +142,20 @@ const Sidenav = () => {
                 >
                   <FontAwesomeIcon icon={faPiggyBank} />
                   <h5 className="text-xs">Investments</h5>
+                </span>
+              </NavLink>
+
+              <NavLink to="/transfer">
+                <span
+                  onClick={() => handleLinkClick("/transfer")}
+                  className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
+                    activeLink === "/transfer"
+                      ? "border-b bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
+                >
+                  <FontAwesomeIcon icon={faMoneyBillTransfer} />
+                  <h5 className="text-xs">Transfers</h5>
                 </span>
               </NavLink>
 

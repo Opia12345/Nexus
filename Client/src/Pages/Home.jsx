@@ -85,9 +85,11 @@ const Home = () => {
             <h1 className="font-bold text-3xl">USER,</h1>
             <h5 className="text-md mt-4">{greeting}</h5>
           </div>
-          <div className="bg-greenBlue h-6 w-6 p-6 rounded-full text-white flex items-center justify-center">
-            <FontAwesomeIcon className="text-xl" icon={faUserAlt} />
-          </div>
+          <Link to="/account">
+            <div className="bg-greenBlue h-6 w-6 p-6 rounded-full text-white flex items-center justify-center">
+              <FontAwesomeIcon className="text-xl" icon={faUserAlt} />
+            </div>
+          </Link>
         </div>
         <FontAwesomeIcon
           onClick={reload}

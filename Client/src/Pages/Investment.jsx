@@ -7,6 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Investment = () => {
   return (
@@ -16,9 +17,11 @@ const Investment = () => {
           <div>
             <h1 className="font-bold text-3xl">Investments</h1>
           </div>
-          <div className="bg-greenBlue h-6 w-6 p-6 rounded-full text-white flex items-center justify-center">
-            <FontAwesomeIcon className="text-xl" icon={faUserAlt} />
-          </div>
+          <Link to="/account">
+            <div className="bg-greenBlue h-6 w-6 p-6 rounded-full text-white flex items-center justify-center">
+              <FontAwesomeIcon className="text-xl" icon={faUserAlt} />
+            </div>
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-3 grid-cols-1 gap-8 mt-8">

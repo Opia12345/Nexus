@@ -39,7 +39,7 @@ const Account = () => {
             </div>
             <div className="border rounded-md p-2 flex items-center gap-4 mt-4 cursor-pointer">
               <FontAwesomeIcon icon={faIdCard} />
-              <h1>Debit Card</h1>
+              <h1>Card</h1>
             </div>
           </div>
 
