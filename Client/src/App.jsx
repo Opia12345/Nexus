@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import "../tailwind/Output.css";
+import Sidenav from "./Components/Sidenav";
+import { Route, Routes } from "react-router-dom";
+import Home from "./Pages/Home";
 
 function App() {
   return (
     <>
-      <div>
-        <h1 className="text-blue-700">Hello</h1>
-      </div>
+      <Sidenav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </>
   );
 }
