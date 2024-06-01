@@ -77,27 +77,19 @@ const Sidenav = () => {
                 </span>
               </NavLink>
 
-              <span
-                className={`cursor-pointer p-2 ${
-                  activeLink === "/settings"
-                    ? "border-s bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
-              >
-                <FontAwesomeIcon icon={faUserAlt} />
-                <h5>Account</h5>
-              </span>
-
-              <span
-                className={`cursor-pointer p-2 ${
-                  activeLink === "/help"
-                    ? "border-s bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
-              >
-                <FontAwesomeIcon icon={faCircleQuestion} className="text-lg" />
-                <h5>Help</h5>
-              </span>
+              <NavLink to="/account">
+                <span
+                  onClick={() => handleLinkClick("/account")}
+                  className={`cursor-pointer p-2 ${
+                    activeLink === "/account"
+                      ? "border-s bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
+                >
+                  <FontAwesomeIcon icon={faUserAlt} />
+                  <h5>Account</h5>
+                </span>
+              </NavLink>
             </div>
             <span
               className={`cursor-pointer p-2 ${
@@ -133,6 +125,7 @@ const Sidenav = () => {
 
               <NavLink to="/investments">
                 <span
+                  onClick={() => handleLinkClick("/investments")}
                   className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
                     activeLink === "/investments"
                       ? "border-b bg-slate-200/20 rounded-md"
@@ -144,27 +137,19 @@ const Sidenav = () => {
                 </span>
               </NavLink>
 
-              <span
-                className={`cursor-pointer p-2 flex-col  text-slate-200 gap-2${
-                  activeLink === "/settings"
-                    ? "border-b bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
-              >
-                <FontAwesomeIcon icon={faUserAlt} />
-                <h5 className="text-xs">Account</h5>
-              </span>
-
-              <span
-                className={`cursor-pointer p-2 flex-col text-slate-200 gap-2${
-                  activeLink === "/help"
-                    ? "border-b bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
-              >
-                <FontAwesomeIcon icon={faCircleQuestion} className="text-lg" />
-                <h5 className="text-xs">Help</h5>
-              </span>
+              <NavLink to="/account">
+                <span
+                  onClick={() => handleLinkClick("/account")}
+                  className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
+                    activeLink === "/account"
+                      ? "border-b bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
+                >
+                  <FontAwesomeIcon icon={faUserAlt} />
+                  <h5 className="text-xs">Account</h5>
+                </span>
+              </NavLink>
             </div>
           </nav>
         </>

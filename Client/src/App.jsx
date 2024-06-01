@@ -4,6 +4,7 @@ import Sidenav from "./Components/Sidenav";
 import { Route, Routes } from "react-router-dom";
 import Home from "./Pages/Home";
 import Investment from "./Pages/Investment";
+import Account from "./Pages/Account";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/investments" element={<Investment />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </>
   );

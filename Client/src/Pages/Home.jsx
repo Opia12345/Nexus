@@ -64,7 +64,7 @@ const Home = () => {
     {
       status: "invalid",
       icon: faTimesCircle,
-      to: "Sheila",
+      to: "Segun",
       time: "9 days ago",
       amount: "23,500",
     },
