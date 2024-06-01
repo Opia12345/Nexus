@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const getGreeting = () => {
@@ -163,9 +164,11 @@ const Home = () => {
               <h1 className="text-slate-400">
                 Start Investing today and earn 20% per annum!
               </h1>
-              <button className="mt-4 bg-frenchBlue text-white px-6 py-2 rounded-md">
-                Get Started
-              </button>
+              <Link to="/investments">
+                <button className="mt-4 bg-frenchBlue text-white px-6 py-2 rounded-md">
+                  Get Started
+                </button>
+              </Link>
             </div>
           </div>
         </div>

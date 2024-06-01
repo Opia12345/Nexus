@@ -50,28 +50,32 @@ const Sidenav = () => {
                 <img src="/logo.png" alt="" />
                 <h5 className="font-black text-xl">Nexus Bank</h5>
               </div>
-              <span
-                onClick={() => handleLinkClick("/")}
-                className={`cursor-pointer p-2 ${
-                  activeLink === "/"
-                    ? "border-s bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
-              >
-                <FontAwesomeIcon icon={faHomeAlt} />
-                <h5>Home</h5>
-              </span>
+              <NavLink to="/" onClick={() => handleLinkClick("/")}>
+                <span
+                  className={`cursor-pointer p-2 ${
+                    activeLink === "/"
+                      ? "border-s bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
+                >
+                  <FontAwesomeIcon icon={faHomeAlt} />
+                  <h5>Home</h5>
+                </span>
+              </NavLink>
 
-              <span
-                className={`cursor-pointer p-2 ${
-                  activeLink === "/generator"
-                    ? "border-s bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
-              >
-                <FontAwesomeIcon icon={faPiggyBank} />
-                <h5>Invest</h5>
-              </span>
+              <NavLink to="/investments">
+                <span
+                  onClick={() => handleLinkClick("/investments")}
+                  className={`cursor-pointer p-2 ${
+                    activeLink === "/investments"
+                      ? "border-s bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
+                >
+                  <FontAwesomeIcon icon={faPiggyBank} />
+                  <h5>Investments</h5>
+                </span>
+              </NavLink>
 
               <span
                 className={`cursor-pointer p-2 ${
@@ -113,33 +117,37 @@ const Sidenav = () => {
         <>
           <nav className="h-[70px] bg-greenBlue text-white z-50 w-full fixed left-0 bottom-0 p-2">
             <div className="flex items-center justify-center gap-8">
-              <span
-                onClick={() => handleLinkClick("/")}
-                className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
-                  activeLink === "/"
-                    ? "border-s bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
-              >
-                <FontAwesomeIcon icon={faHomeAlt} />
-                <h5 className="text-xs">Home</h5>
-              </span>
+              <NavLink to="/" onClick={() => handleLinkClick("/")}>
+                <span
+                  onClick={() => handleLinkClick("/")}
+                  className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
+                    activeLink === "/"
+                      ? "border-b bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
+                >
+                  <FontAwesomeIcon icon={faHomeAlt} />
+                  <h5 className="text-xs">Home</h5>
+                </span>
+              </NavLink>
 
-              <span
-                className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
-                  activeLink === "/generator"
-                    ? "border-s bg-slate-200/20 rounded-md"
-                    : ""
-                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
-              >
-                <FontAwesomeIcon icon={faPiggyBank} />
-                <h5 className="text-xs">Invest</h5>
-              </span>
+              <NavLink to="/investments">
+                <span
+                  className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
+                    activeLink === "/investments"
+                      ? "border-b bg-slate-200/20 rounded-md"
+                      : ""
+                  } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
+                >
+                  <FontAwesomeIcon icon={faPiggyBank} />
+                  <h5 className="text-xs">Investments</h5>
+                </span>
+              </NavLink>
 
               <span
                 className={`cursor-pointer p-2 flex-col  text-slate-200 gap-2${
                   activeLink === "/settings"
-                    ? "border-s bg-slate-200/20 rounded-md"
+                    ? "border-b bg-slate-200/20 rounded-md"
                     : ""
                 } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
               >
@@ -150,7 +158,7 @@ const Sidenav = () => {
               <span
                 className={`cursor-pointer p-2 flex-col text-slate-200 gap-2${
                   activeLink === "/help"
-                    ? "border-s bg-slate-200/20 rounded-md"
+                    ? "border-b bg-slate-200/20 rounded-md"
                     : ""
                 } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
               >
