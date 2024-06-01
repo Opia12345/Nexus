@@ -39,6 +39,18 @@ const userSchema = new Schema(
     passkeyExpiration: {
       type: Number,
     },
+    failedAttempts: {
+      type: Number,
+      default: 0,
+    },
+    isLocked: {
+      type: Boolean,
+      default: false,
+    },
+    lockUntil: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );
