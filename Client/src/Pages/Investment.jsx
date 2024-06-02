@@ -51,7 +51,7 @@ const Investment = () => {
           </div>
         </div>
 
-        <div className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8 items-center">
+        <div className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-8 pb-28 items-center">
           <div className="border rounded-md p-4 md:col-span-2">
             <div className="">
               <span className="flex items-center text-frenchBlue justify-center flex-col p-2 border-b">

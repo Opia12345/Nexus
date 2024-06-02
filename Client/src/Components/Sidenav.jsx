@@ -3,16 +3,26 @@ import {
   faMoneyBillTransfer,
   faPiggyBank,
   faPowerOff,
+  faSignOut,
   faUserAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
 const Sidenav = () => {
   const [activeLink, setActiveLink] = useState(null);
   const [mobile, setMobile] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [logout, setLogout] = useState(false);
+
+  const myClassNames = {
+    enter: "opacity-0",
+    enterActive: "opacity-100 transition-opacity duration-500 ease-in-out",
+    // exit: 'opacity-100',
+    exitActive: "opacity-0 transition-opacity duration-500 ease-in-out",
+  };
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
@@ -36,9 +46,31 @@ const Sidenav = () => {
 
   return (
     <>
+      <CSSTransition
+        in={logout}
+        classNames={myClassNames}
+        timeout={300}
+        unmountOnExit
+      >
+        <div className="fixed top-0 right-0 text-white flex items-center justify-center bg-slate-200/5 z-50 w-full h-screen backdrop-blur-md">
+          <div className="p-4 rounded-md flex flex-col items-center gap-4 bg-frenchBlue">
+            <FontAwesomeIcon className="text-2xl" icon={faSignOut} />
+            <h5>Are you sure you want to logout?</h5>
+            <div className="flex gap-4">
+              <button className="border rounded-md px-6 py-2">Logout</button>
+              <button
+                onClick={() => setLogout(false)}
+                className="border rounded-md px-6 py-2 bg-white text-black transition-all ease-in-out duration-200"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </CSSTransition>
       {!mobile && (
         <>
-          <nav className="w-[250px] h-screen py-10 bg-greenBlue text-white z-50 fixed left-0 top-0 p-8 flex flex-col justify-between">
+          <nav className="w-[250px] h-screen py-10 bg-greenBlue text-white z-20 fixed left-0 top-0 p-8 flex flex-col justify-between">
             <div className="">
               <div className="flex gap-4 justify-center items-center mb-8">
                 <img src="/logo.png" alt="" />
@@ -100,6 +132,7 @@ const Sidenav = () => {
               </NavLink>
             </div>
             <span
+              onClick={() => setLogout(true)}
               className={`cursor-pointer p-2 ${
                 activeLink === "/dashboard"
                   ? "border-s bg-slate-200/20 rounded-md"
