@@ -7,11 +7,9 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [password, setPassword] = useState(false);
-  const validationSchema = Yup.object({
-    Email: Yup.string().email("Invalid email address").required("Required"),
-    Password: Yup.string()
-      .min(8, "Password must be at least 8 characters")
-      .required("Required"),
+  const validationSchema = Yup.object().shape({
+    userID: Yup.string().required("User ID is required"),
+    Password: Yup.string().required("Password is required"),
   });
 
   return (
@@ -19,7 +17,7 @@ const Login = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">Login to Your Account</h2>
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ userID: "", Password: "" }}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting }) => {
             console.log(values);
@@ -30,19 +28,19 @@ const Login = () => {
             <Form>
               <div className="mb-4">
                 <label
-                  htmlFor="Email"
+                  htmlFor="userID"
                   className="block text-sm font-medium text-gray-700"
                 >
                   Email Address
                 </label>
                 <Field
-                  type="Email"
-                  name="Email"
-                  id="Email"
+                  type="userID"
+                  name="userID"
+                  id="userID"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-frenchBlue focus:border-frenchBlue sm:text-sm"
                 />
                 <ErrorMessage
-                  name="Email"
+                  name="userID"
                   component="div"
                   className="text-red-500 text-sm"
                 />
