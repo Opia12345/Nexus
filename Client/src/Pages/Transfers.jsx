@@ -12,23 +12,32 @@ const Transfers = () => {
     accountNumber: "",
     amount: "",
     description: "",
+    bank: "",
   };
 
   const validationSchema = Yup.object({
     recipientName: Yup.string().required("Recipient name is required"),
     accountNumber: Yup.string()
       .required("Account number is required")
-      .matches(/^\d+$/, "Account number must be numeric"),
+      .matches(/^\d{10}$/, "Account number must be exactly 10 digits"),
     amount: Yup.number()
       .required("Amount is required")
       .positive("Amount must be a positive number"),
     description: Yup.string().optional(),
+    bank: Yup.string().required("Bank is required"),
   });
 
   const onSubmit = (values, { resetForm }) => {
     console.log(values);
     resetForm();
   };
+
+  const bankOptions = [
+    { value: "", label: "Select a Bank" },
+    { value: "United Bank for Africa", label: "United Bank for Africa" },
+    { value: "Polaris Bank", label: "Polaris Bank" },
+    { value: "Access Bank", label: "Access Bank" },
+  ];
 
   return (
     <>
@@ -89,13 +98,38 @@ const Transfers = () => {
                       Account Number
                     </label>
                     <Field
-                      type="text"
                       id="accountNumber"
                       name="accountNumber"
                       className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                     />
                     <ErrorMessage
                       name="accountNumber"
+                      component="div"
+                      className="text-red-600 text-sm mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="bank"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Bank
+                    </label>
+                    <Field
+                      as="select"
+                      id="bank"
+                      name="bank"
+                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    >
+                      {bankOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </Field>
+                    <ErrorMessage
+                      name="bank"
                       component="div"
                       className="text-red-600 text-sm mt-1"
                     />
@@ -155,6 +189,7 @@ const Transfers = () => {
               )}
             </Formik>
           </div>
+
           <div className="flex flex-col md:mt-0 mt-8 gap-4 order-first md:order-last items-center">
             <h2 className="text-2xl font-bold text-gray-900">
               Available Accounts
