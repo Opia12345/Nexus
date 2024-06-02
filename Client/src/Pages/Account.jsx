@@ -17,6 +17,7 @@ import Card from "../Components/Card";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
+import { Link } from "react-router-dom";
 
 const Account = () => {
   const [logout, setLogout] = useState(false);
@@ -271,13 +272,15 @@ const Account = () => {
 
         <div className="grid md:grid-cols-2 grid-cols-1 mt-8 gap-4">
           <div>
-            <div className="border rounded-md p-2 flex items-center gap-4 justify-between cursor-pointer">
-              <div className="flex items-center gap-4">
-                <FontAwesomeIcon icon={faUserAlt} />
-                <h1>Account Settings</h1>
+            <Link to="/accSettings">
+              <div className="border rounded-md p-2 flex items-center gap-4 justify-between cursor-pointer">
+                <div className="flex items-center gap-4">
+                  <FontAwesomeIcon icon={faUserAlt} />
+                  <h1>Account Settings</h1>
+                </div>
+                <FontAwesomeIcon icon={faChevronRight} />
               </div>
-              <FontAwesomeIcon icon={faChevronRight} />
-            </div>
+            </Link>
             <div
               onClick={() => setCard(true)}
               className="border rounded-md p-2 flex items-center gap-4 mt-4 cursor-pointer"
