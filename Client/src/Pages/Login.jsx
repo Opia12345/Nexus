@@ -31,7 +31,7 @@ const Login = () => {
                   htmlFor="userID"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Email Address
+                    User ID
                 </label>
                 <Field
                   type="userID"
