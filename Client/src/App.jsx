@@ -13,7 +13,7 @@ import Login from "./Pages/Login";
 function App() {
   return (
     <>
-      {/* <Sidenav /> */}
+      <Sidenav />
       <Routes>
         <Route index path="/" element={<Signup />} />
         <Route path="/signin" element={<Login />} />

@@ -13,7 +13,7 @@ const Login = () => {
   });
 
   return (
-    <div className="flex bg-[url('/bg2.jpg')] bg-cover bg-center justify-center bg-blend-darken items-center min-h-screen bg-gray-900/70 p-4">
+    <div className="flex bg-[url('/bg2.png')] bg-cover bg-center justify-center bg-blend-darken items-center min-h-screen bg-gray-900/70 p-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">Login to Your Account</h2>
         <Formik

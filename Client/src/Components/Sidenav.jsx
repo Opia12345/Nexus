@@ -76,10 +76,10 @@ const Sidenav = () => {
                 <img src="/logo.png" alt="" />
                 <h5 className="font-black text-xl">Nexus Bank</h5>
               </div>
-              <NavLink to="/" onClick={() => handleLinkClick("/")}>
+              <NavLink to="/dashboard" onClick={() => handleLinkClick("/")}>
                 <span
                   className={`cursor-pointer p-2 ${
-                    activeLink === "/"
+                    activeLink === "/dashboard"
                       ? "border-s bg-slate-200/20 rounded-md"
                       : ""
                   } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
@@ -134,9 +134,7 @@ const Sidenav = () => {
             <span
               onClick={() => setLogout(true)}
               className={`cursor-pointer p-2 ${
-                activeLink === "/dashboard"
-                  ? "border-s bg-slate-200/20 rounded-md"
-                  : ""
+                activeLink === "//" ? "border-s bg-slate-200/20 rounded-md" : ""
               } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
             >
               <FontAwesomeIcon icon={faPowerOff} />
@@ -150,11 +148,11 @@ const Sidenav = () => {
         <>
           <nav className="h-[70px] bg-greenBlue text-white z-50 w-full fixed left-0 bottom-0 p-2">
             <div className="flex items-center justify-center gap-8">
-              <NavLink to="/" onClick={() => handleLinkClick("/")}>
+              <NavLink to="/dashboard" onClick={() => handleLinkClick("/")}>
                 <span
-                  onClick={() => handleLinkClick("/")}
+                  onClick={() => handleLinkClick("/dashboard")}
                   className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
-                    activeLink === "/"
+                    activeLink === "/dashboard"
                       ? "border-b bg-slate-200/20 rounded-md"
                       : ""
                   } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}
