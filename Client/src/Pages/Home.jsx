@@ -11,6 +11,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../Context/UserContext";
 
 const Home = () => {
   const getGreeting = () => {
@@ -77,12 +78,16 @@ const Home = () => {
     },
   ];
 
+  const { username, lastname } = useUserContext();
+
   return (
     <>
       <section className="md:ml-[250px] md:p-8 p-4">
         <div className="mt-8 flex items-center justify-between">
           <div>
-            <h1 className="font-bold text-3xl">USER,</h1>
+            <h1 className="font-bold text-3xl">
+              {username} {lastname},
+            </h1>
             <h5 className="text-md mt-4">{greeting}</h5>
           </div>
           <Link to="/account">

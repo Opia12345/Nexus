@@ -52,7 +52,7 @@ function App() {
   ].includes(route.pathname);
 
   return (
-    <AuthContextProvider>
+    <>
       {sidenav && <Sidenav />}
       <Routes>
         <Route index path="/" element={<Signup />} />
@@ -65,22 +65,48 @@ function App() {
         <Route path="/err" element={<Unauthorized />} />
 
         {/* Protected Routes */}
-        <Route path="/dashboard" element={<PrivateRoute element={Home} />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/investments"
-          element={<PrivateRoute element={Investment} />}
+          element={
+            <PrivateRoute>
+              <Investment />
+            </PrivateRoute>
+          }
         />
-        <Route path="/account" element={<PrivateRoute element={Account} />} />
+        <Route
+          path="/account"
+          element={
+            <PrivateRoute>
+              <Account />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/transfer"
-          element={<PrivateRoute element={Transfers} />}
+          element={
+            <PrivateRoute>
+              <Transfers />
+            </PrivateRoute>
+          }
         />
         <Route
           path="/accSettings"
-          element={<PrivateRoute element={AccountSettings} />}
+          element={
+            <PrivateRoute>
+              <AccountSettings />
+            </PrivateRoute>
+          }
         />
       </Routes>
-    </AuthContextProvider>
+    </>
   );
 }
 

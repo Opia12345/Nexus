@@ -3,9 +3,11 @@ import { Navigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useContext(AuthContext);
+  const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
-  return user ? children : <Navigate to="/err" />;
+  if (!userId) {
+    return <Navigate to="/err" />;
+  }
+  return children;
 };
-
 export default PrivateRoute;
