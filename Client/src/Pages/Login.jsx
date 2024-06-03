@@ -31,7 +31,7 @@ const Login = () => {
                   htmlFor="userID"
                   className="block text-sm font-medium text-gray-700"
                 >
-                    User ID
+                  User ID
                 </label>
                 <Field
                   type="userID"
@@ -89,6 +89,11 @@ const Login = () => {
             </h5>
           </Link>
         </p>
+        <Link to="/forgotPassword" className="flex justify-center text-sm mt-4">
+          <h5 className="text-frenchBlue hover:text-frenchBlue/90">
+            Forgot Password?
+          </h5>
+        </Link>
       </div>
     </div>
   );
