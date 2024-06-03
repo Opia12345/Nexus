@@ -1,17 +1,26 @@
 import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faEye,
   faEyeSlash,
+  faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { CSSTransition } from "react-transition-group";
+import axios from "axios";
+import { getApiUrl } from "../config";
 
 const ResetPassword = () => {
   const [password, setPassword] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [err, setErr] = useState(false);
+  const navigate = useNavigate();
+  const apiUrl = getApiUrl(process.env.NODE_ENV);
+  const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
   const validationSchema = Yup.object({
     Password: Yup.string()
@@ -22,21 +31,64 @@ const ResetPassword = () => {
       .required("Required"),
   });
 
+  const styles = {
+    enter: "transform translate-x-full opacity-0",
+    enterActive:
+      "transform -translate-x-0 opacity-100 transition-all duration-500 ease-in-out",
+    exitActive:
+      "transform translate-x-full opacity-0 transition-all duration-500 ease-in-out",
+  };
+
+  const handleSubmit = (values, { resetForm }) => {
+    setIsSubmitting(true);
+    axios
+      .patch(`${apiUrl}/password-update/${userId}`, values)
+      .then((response) => {
+        setErr(null);
+        setSuccess(response.data.message);
+        setTimeout(() => {
+          navigate(`/signin`);
+        }, 4000);
+        resetForm();
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setErr(err.response.data.error || "An error occurred");
+          setTimeout(() => {
+            setErr(false);
+          }, 3000);
+          setIsSubmitting(false);
+        }
+      });
+  };
+
   return (
     <div className="flex bg-[url('/bg2.png')] bg-cover bg-center justify-center bg-blend-darken items-center min-h-screen bg-gray-900/70 p-4">
-      {success && (
-        <>
-          <div className="p-4 shadow-xl fixed md:right-3 top-10 border-s bg-white border-green-500 rounded-md flex items-center gap-4">
-            <FontAwesomeIcon className="text-green-500" icon={faCheckCircle} />
-            <h5>
-              Your Password has been succesfully updated! You can now{" "}
-              <Link to="/signin" className="underline">
-                Login
-              </Link>
-            </h5>
-          </div>
-        </>
-      )}
+      <CSSTransition
+        in={success}
+        classNames={styles}
+        timeout={300}
+        unmountOnExit
+      >
+        <div className="p-4 shadow-xl fixed md:right-3 top-10 border-s bg-white border-green-500 rounded-md flex items-center gap-4">
+          <FontAwesomeIcon className="text-green-500" icon={faCheckCircle} />
+          <h5>
+            {success} You can now{" "}
+            <Link to="/signin" className="underline">
+              Login
+            </Link>
+          </h5>
+        </div>
+      </CSSTransition>
+
+      <CSSTransition in={err} classNames={styles} timeout={300} unmountOnExit>
+        <div className="p-4 shadow-xl bg-white fixed md:right-3 top-10 border-s border-red-500 rounded-md flex items-center gap-4">
+          <FontAwesomeIcon className="text-red-500" icon={faTimesCircle} />
+          <h5>{err}.</h5>
+        </div>
+      </CSSTransition>
+
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">Reset Your Password</h2>
         <Formik
@@ -45,12 +97,9 @@ const ResetPassword = () => {
             confirmPassword: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values, { setSubmitting }) => {
-            console.log(values);
-            setSubmitting(false);
-          }}
+          onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {() => (
             <Form>
               <div className="mb-4">
                 <label
@@ -108,7 +157,7 @@ const ResetPassword = () => {
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:frenchBlue"
                   disabled={isSubmitting}
                 >
-                  Update Password
+                  {isSubmitting ? "Updating..." : "Update Password"}
                 </button>
               </div>
             </Form>

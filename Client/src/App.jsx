@@ -15,7 +15,6 @@ import ForgotPassword from "./Routes/ForgotPassword";
 import OtpConfirmation from "./Routes/OtpConfirmation";
 import ResetPassword from "./Routes/ResetPassword";
 import Unauthorized from "./Routes/Unauthourized";
-import { AuthContextProvider } from "./Context/AuthContext";
 import PrivateRoute from "./Routes/PrivateRoute";
 
 function App() {
@@ -29,27 +28,34 @@ function App() {
       ![
         "/",
         "/signin",
-        "/verifyEmail/:userId",
+        `/verifyEmail/${userId}`,
         "/emailConfirmed",
         "/forgotPassword",
-        "/otpConfirmation/:userId",
-        "/resetPassword/:userId",
+        `/otpConfirmation/${userId}`,
+        `/resetPassword/${userId}`,
       ].includes(route.pathname)
     ) {
       redirect("/err");
     }
   }, [route.pathname, userId, redirect]);
 
-  const sidenav = ![
+  const hideSidenavRoutes = [
     "/",
     "/signin",
-    "/verifyEmail/:userId",
+    /^\/verifyEmail\/\w+$/,
     "/emailConfirmed",
     "/forgotPassword",
-    "/otpConfirmation/:userId",
     "/resetPassword/:userId",
+    /^\/otpConfirmation\/\w+$/,
+    /^\/resetPassword\/\w+$/,
     "/err",
-  ].includes(route.pathname);
+  ];
+
+  const sidenav = !hideSidenavRoutes.some((pattern) =>
+    typeof pattern === "string"
+      ? pattern === route.pathname
+      : pattern.test(route.pathname)
+  );
 
   return (
     <>

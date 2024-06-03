@@ -13,9 +13,11 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import { useUserContext } from "../Context/UserContext";
 
 const Card = () => {
   const [mobile, setMobile] = useState(false);
+  const { username, lastname } = useUserContext();
 
   useEffect(() => {
     const handleResize = () => {
@@ -44,7 +46,7 @@ const Card = () => {
                   **** **** **** 2574
                 </h1>
                 <span className="flex items-center justify-between">
-                  <h1>USERS FULL NAME</h1>
+                  <h1>{lastname} {username}</h1>
                   <h5 className="text-[8px]">
                     Expires: <br /> 04/25
                   </h5>
@@ -94,7 +96,7 @@ const Card = () => {
                     **** **** **** 2574
                   </h1>
                   <span className="flex items-center justify-between">
-                    <h1>USERS FULL NAME</h1>
+                    <h1>{lastname} {username}</h1>
                     <h5 className="text-[8px]">
                       Expires: <br /> 04/25
                     </h5>

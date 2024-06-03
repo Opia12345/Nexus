@@ -24,7 +24,7 @@ exports.ResendOTP = async (req, res) => {
     await user.save();
 
     const mailOptions = {
-      to: Email,
+      to: user.Email,
       subject: "Nexus Bank: Password Reset Request",
       html: `
       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background: white; color: #333; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">

@@ -18,6 +18,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
 import { Link } from "react-router-dom";
+import { useUserContext } from "../Context/UserContext";
 
 const Account = () => {
   const [logout, setLogout] = useState(false);
@@ -26,6 +27,7 @@ const Account = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState(null);
+  const { username, lastname, userId } = useUserContext();
 
   const initialValues = {
     name: "",
@@ -43,7 +45,7 @@ const Account = () => {
 
   const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
   const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-  const userId = import.meta.env.VITE_EMAILJS_USER_ID;
+  const userID = import.meta.env.VITE_EMAILJS_USER_ID;
 
   const onSubmit = (values, { resetForm }) => {
     setIsSubmitting(true);
@@ -53,7 +55,7 @@ const Account = () => {
         serviceId,
         templateId,
         { from_name: name, to_email: email, message: message },
-        userId
+        userID
       )
       .then(
         (result) => {
@@ -259,7 +261,11 @@ const Account = () => {
         <div className="mt-8">
           <div>
             <h1 className="font-bold text-3xl">My Account</h1>
-            <p className="text-gray-500 mt-2">USERS FULL NAME</p>
+            <p className="text-gray-500 mt-2">
+              {lastname}&nbsp;
+              {username}
+            </p>
+            <p className="text-gray-500 mt-2 text-sm">User ID: {userId}</p>
           </div>
         </div>
 

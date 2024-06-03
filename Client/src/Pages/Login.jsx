@@ -131,7 +131,7 @@ const Login = () => {
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-frenchBlue"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Loading" : "Login"}
+                  {isSubmitting ? "Loading..." : "Login"}
                 </button>
               </div>
             </Form>

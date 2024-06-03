@@ -4,9 +4,11 @@ import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { CSSTransition } from "react-transition-group";
+import { useUserContext } from "../Context/UserContext";
 
 const AccountSettings = () => {
   const [del, setDel] = useState(false);
+  const { userEmail, updateUserEmail } = useUserContext();
 
   const emailSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
@@ -80,6 +82,7 @@ const AccountSettings = () => {
                     <Field
                       id="email"
                       name="email"
+                      placeholder={userEmail}
                       type="email"
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                     />
