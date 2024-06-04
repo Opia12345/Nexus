@@ -157,11 +157,11 @@ const Sidenav = () => {
                 </span>
               </NavLink>
 
-              <NavLink to="/transfer">
+              <NavLink to="/transfer/:userId">
                 <span
-                  onClick={() => handleLinkClick("/transfer")}
+                  onClick={() => handleLinkClick("/transfer/:userId")}
                   className={`cursor-pointer p-2 ${
-                    activeLink === "/transfer"
+                    activeLink === "/transfer/:userId"
                       ? "border-s bg-slate-200/20 rounded-md"
                       : ""
                   } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
@@ -230,11 +230,11 @@ const Sidenav = () => {
                 </span>
               </NavLink>
 
-              <NavLink to="/transfer">
+              <NavLink to="/transfer/:userId">
                 <span
-                  onClick={() => handleLinkClick("/transfer")}
+                  onClick={() => handleLinkClick("/transfer/:userId")}
                   className={`cursor-pointer p-2 flex-col text-slate-200 gap-2 ${
-                    activeLink === "/transfer"
+                    activeLink === "/transfer/:userId"
                       ? "border-b bg-slate-200/20 rounded-md"
                       : ""
                   } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center`}

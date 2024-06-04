@@ -14,17 +14,24 @@ const transporter = nodemailer.createTransport({
 // Validation Schema
 const Validation = yup.object().shape({
   PassKey: yup.string().required("Passkey is required"),
+  Password: yup.string().required("Password is required"),
 });
 
 exports.KeyAuthorization = async (req, res) => {
-  const { PassKey } = req.body;
+  const { PassKey, Password, transferDetails } = req.body;
+  console.log(req.body);
 
   try {
-    await Validation.validate({ PassKey }, { abortEarly: false });
-    const existingUser = await User.findOne({ PassKey: PassKey });
+    await Validation.validate({ PassKey, Password }, { abortEarly: false });
+    const existingUser = await User.findOne({ PassKey });
+    const existingUserPassword = await User.findOne({ PassKey });
 
     if (!existingUser) {
       return res.status(400).json({ error: "Invalid passkey!" });
+    }
+
+    if (!existingUserPassword) {
+      return res.status(400).json({ error: "Invalid Password!" });
     }
 
     if (existingUser.isLocked) {
@@ -96,26 +103,47 @@ exports.KeyAuthorization = async (req, res) => {
       subject: "Nexus Bank: Transfer Successful!",
       html: `
         <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background: white; color: #333; font-family: Arial, sans-serif; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-        <tr>
+          <tr>
             <td align="center" style="background-color: #004080; padding: 20px 0;">
-                <img src="cid:logo" alt="Nexus Bank Logo" style="width: 150px; display: block;">
+              <img src="cid:logo" alt="Nexus Bank Logo" style="width: 150px; display: block;">
             </td>
-        </tr>
-        <tr>
+          </tr>
+          <tr>
             <td style="padding: 40px;">
-                <h3 style="color: #004080; margin-top: 0;">Dear ${existingUser.FirstName},</h3>
-                <p>You have suucessfully completed a transfer on your Nexus account.</p>
-                <h2 style="display:flex; justify-content: center; align-items: center; font-size: 40px; color: #004080;">Amount: [Amount here]</h2>
-                <p>If you do not authorize this transfer, please contact our customer support team immediately at chinyereozoemelam2@gmail.com or call us at +234 817 079 5643.</p>
-                <p>For your security, please ensure that your account information remains confidential and regularly update your password.</p>
-                <p>Thank you for being a valued member of Nexus Bank.</p>
-                <p>Best regards,<br />The Nexus Bank Team</p>
-                <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
-                <p style="text-align: center; font-size: 12px; color: #666;">&copy; 2024 Nexus Bank. All rights reserved.<br>You are receiving this email because you signed up on our platform.</p>
+              <h3 style="color: #004080; margin-top: 0;">Dear ${existingUser.FirstName},</h3>
+              <p>You have successfully completed a transfer on your Nexus account. Below are the details:</p>
+              <table border="0" cellpadding="10" cellspacing="0" width="100%" style="background: #f9f9f9; border-collapse: collapse; margin: 20px 0;">
+                <tr>
+                  <td style="border: 1px solid #ddd;">Recipient Name:</td>
+                  <td style="border: 1px solid #ddd;">${transferDetails.recipientName}</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ddd;">Account Number:</td>
+                  <td style="border: 1px solid #ddd;">${transferDetails.accountNumber}</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ddd;">Amount:</td>
+                  <td style="border: 1px solid #ddd;">${transferDetails.amount}</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ddd;">Description:</td>
+                  <td style="border: 1px solid #ddd;">${transferDetails.description}</td>
+                </tr>
+                <tr>
+                  <td style="border: 1px solid #ddd;">Bank:</td>
+                  <td style="border: 1px solid #ddd;">${transferDetails.bank}</td>
+                </tr>
+              </table>
+              <p>If you did not authorize this transfer, please contact our customer support team immediately at <a href="mailto:chinyereozoemelam2@gmail.com">chinyereozoemelam2@gmail.com</a> or call us at +234 817 079 5643.</p>
+              <p>For your security, please ensure that your account information remains confidential and regularly update your password.</p>
+              <p>Thank you for being a valued member of Nexus Bank.</p>
+              <p>Best regards,<br />The Nexus Bank Team</p>
+              <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
+              <p style="text-align: center; font-size: 12px; color: #666;">&copy; 2024 Nexus Bank. All rights reserved.<br>You are receiving this email because you signed up on our platform.</p>
             </td>
-        </tr>
-    </table>
-        `,
+          </tr>
+        </table>
+      `,
       attachments: [
         {
           filename: "logo.png",
@@ -133,7 +161,7 @@ exports.KeyAuthorization = async (req, res) => {
       } else {
         console.log("Email sent: " + info.response);
         res.status(200).json({
-          message: "Notification email sent",
+          message: "Transaction Authorized",
           userId: existingUser._id,
         });
       }

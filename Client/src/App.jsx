@@ -98,7 +98,7 @@ function App() {
           }
         />
         <Route
-          path="/transfer"
+          path="/transfer/:userId"
           element={
             <PrivateRoute>
               <Transfers />
