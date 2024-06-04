@@ -86,7 +86,7 @@ const VerifyEmail = () => {
     <>
       <CSSTransition in={err} classNames={styles} timeout={500} unmountOnExit>
         <div className="flex justify-center fixed bottom-10 right-10">
-          <div className="flex items-center justify-center space-x-4 bg-red-700/30 w-auto px-4 py-2 rounded-md h-[40px]">
+          <div className="flex items-center justify-center space-x-4 bg-white w-auto px-4 py-2 rounded-md h-[40px]">
             <FontAwesomeIcon icon={faTimesCircle} />
             <small className="font-semibold">{err}</small>
           </div>

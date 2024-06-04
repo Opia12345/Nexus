@@ -129,14 +129,14 @@ const Account = () => {
         timeout={300}
         unmountOnExit
       >
-        <div className="p-4 shadow-xl fixed right-3 bottom-20 border-s border-green-500 rounded-md flex items-center gap-4">
+        <div className="p-4 shadow-xl bg-white fixed right-3 bottom-20 border-s border-green-500 rounded-md flex items-center gap-4">
           <FontAwesomeIcon className="text-green-500" icon={faCheckCircle} />
           <h5>Your message has been delivered.</h5>
         </div>
       </CSSTransition>
 
       <CSSTransition in={err} classNames={styles} timeout={300} unmountOnExit>
-        <div className="p-4 shadow-xl fixed right-3 bottom-20 border-s border-red-500 rounded-md flex items-center gap-4">
+        <div className="p-4 shadow-xl fixed right-3 bg-white bottom-20 border-s border-red-500 rounded-md flex items-center gap-4">
           <FontAwesomeIcon className="text-red-500" icon={faTimesCircle} />
           <h5>{err}.</h5>
         </div>

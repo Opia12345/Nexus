@@ -15,6 +15,7 @@ const logout = require("./Controllers/Logout");
 const PassKey = require("./Controllers/PassKey");
 const Delete = require("./Controllers/Delete");
 const KeyAuthorization = require("./Controllers/KeyAuthorization");
+const passwordValidate = require("./Controllers/PasswordValidate");
 require("dotenv").config();
 
 // CONFIGURATIONS
@@ -37,6 +38,7 @@ app.post("/logout", logout.logout);
 app.delete(`/users/delete/:userId`, Delete.Delete);
 app.patch(`/email-update/:userId`, updateEmail.updateEmail);
 app.patch(`/password-update/:userId`, updatePassword.updatePassword);
+app.post(`/password-validate/:userId`, passwordValidate.passwordValidate);
 app.post("/passwordReset", PasswordReset.PasswordReset);
 app.post("/resend-verification/:userId", resendVerification.resendVerification);
 app.post("/pass-key/:userId", PassKey.PassKey);

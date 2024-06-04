@@ -116,7 +116,7 @@ const Sidenav = () => {
       </CSSTransition>
 
       <CSSTransition in={err} classNames={styles} timeout={300} unmountOnExit>
-        <div className="p-4 shadow-xl fixed right-3 bottom-20 border-s border-red-500 rounded-md flex items-center gap-4">
+        <div className="p-4 shadow-xl fixed right-3 bottom-20 border-s bg-white border-red-500 rounded-md flex items-center gap-4">
           <FontAwesomeIcon className="text-red-500" icon={faTimesCircle} />
           <h5>{err}.</h5>
         </div>

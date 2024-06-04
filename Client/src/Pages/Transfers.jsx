@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
+  faSleigh,
   faTimes,
   faTimesCircle,
   faUserAlt,
@@ -17,8 +18,8 @@ import { getApiUrl } from "../config";
 const Transfers = () => {
   const [passKey, setPassKey] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [pin, setPin] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [success1, setSuccess1] = useState(false);
   const [err, setErr] = useState(null);
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const userId = JSON.parse(localStorage.getItem("user"))?.userId;
@@ -35,6 +36,16 @@ const Transfers = () => {
     passKey: "",
     Password: "",
   };
+
+  const initialValues2 = {
+    Password: "",
+  };
+
+  const validationSchema2 = Yup.object({
+    Password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 digits"),
+  });
 
   const validationSchema1 = Yup.object({
     PassKey: Yup.string()
@@ -110,17 +121,37 @@ const Transfers = () => {
           }
         });
     } else {
-      setIsSubmitting(true);
-      setIsSubmitting(false);
-      setSuccess1(true);
-      setTimeout(() => {
-        setSuccess1(false);
-      }, 5000);
+      setPin(true);
       resetForm();
     }
 
     transferData.count += 1;
     localStorage.setItem("transferData", JSON.stringify(transferData));
+  };
+
+  const handlePin = (values, { resetForm }) => {
+    setIsSubmitting(true);
+    axios
+      .post(`${apiUrl}/password-validate/${userId}`, values)
+      .then((response) => {
+        setErr(null);
+        setSuccess(response.data.message);
+        setPin(false);
+        setTimeout(() => {
+          setSuccess(false);
+        }, 6000);
+        setIsSubmitting(false);
+        resetForm();
+      })
+      .catch((err) => {
+        if (err.response) {
+          setErr(err.response.data.error || "An error occurred");
+          setTimeout(() => {
+            setErr(false);
+          }, 4000);
+          setIsSubmitting(false);
+        }
+      });
   };
 
   const handleSubmit = (values, { resetForm }) => {
@@ -135,7 +166,7 @@ const Transfers = () => {
         setSuccess(response.data.message);
         setTimeout(() => {
           setSuccess(false);
-        }, 3000);
+        }, 6000);
         setPassKey(false);
         localStorage.removeItem("transferDetails");
         resetForm();
@@ -242,31 +273,79 @@ const Transfers = () => {
       </CSSTransition>
 
       <CSSTransition
+        in={pin}
+        classNames={myClassNames}
+        timeout={300}
+        unmountOnExit
+      >
+        <div className="fixed top-0 right-0 flex items-center justify-center bg-slate-200/5 z-20 w-full h-screen backdrop-blur-md">
+          <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-md shadow-md">
+            <h2 className="text-2xl font-bold text-center text-gray-700">
+              Input Your Password
+            </h2>
+            <Formik
+              initialValues={initialValues2}
+              validationSchema={validationSchema2}
+              onSubmit={handlePin}
+            >
+              {() => (
+                <Form>
+                  <div className="mb-4">
+                    <label className="block text-gray-700" htmlFor="name">
+                      Password
+                    </label>
+                    <Field
+                      type="text"
+                      id="Password"
+                      name="Password"
+                      className="w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:ring-opacity-50"
+                    />
+                    <ErrorMessage
+                      name="Password"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
+                  </div>
+
+                  <span className="grid grid-cols-4 gap-2 justify-center items-center">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full px-4 py-2 col-span-3 mt-2 border-frenchBlue font-bold text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                    >
+                      {isSubmitting ? "Processing..." : "Send"}
+                    </button>
+                    <button
+                      onClick={() => setPin(false)}
+                      className="border w-full px-4 py-2 mt-2 rounded-md"
+                    >
+                      <FontAwesomeIcon
+                        className="text-red-500"
+                        icon={faTimes}
+                      />
+                    </button>
+                  </span>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      </CSSTransition>
+
+      <CSSTransition
         in={success}
         classNames={styles}
         timeout={300}
         unmountOnExit
       >
-        <div className="p-4 z-50 shadow-xl fixed right-3 bottom-20 border-s border-green-500 rounded-md flex items-center gap-4">
+        <div className="p-4 z-50 shadow-xl bg-white fixed right-3 bottom-20 border-s border-green-500 rounded-md flex items-center gap-4">
           <FontAwesomeIcon className="text-green-500" icon={faCheckCircle} />
           <h5>{success}</h5>
         </div>
       </CSSTransition>
 
-      <CSSTransition
-        in={success1}
-        classNames={styles}
-        timeout={300}
-        unmountOnExit
-      >
-        <div className="p-4 shadow-xl fixed right-3 bottom-20 border-s border-green-500 rounded-md flex items-center gap-4">
-          <FontAwesomeIcon className="text-green-500" icon={faCheckCircle} />
-          <h5>Your Transaction is being processed.</h5>
-        </div>
-      </CSSTransition>
-
       <CSSTransition in={err} classNames={styles} timeout={300} unmountOnExit>
-        <div className="p-4 shadow-xl z-50 fixed right-3 bottom-20 border-s border-red-500 rounded-md flex items-center gap-4">
+        <div className="p-4 shadow-xl z-50 bg-white fixed right-3 bottom-20 border-s border-red-500 rounded-md flex items-center gap-4">
           <FontAwesomeIcon className="text-red-500" icon={faTimesCircle} />
           <h5>{err}</h5>
         </div>
@@ -375,7 +454,7 @@ const Transfers = () => {
                       key)
                     </label>
                     <Field
-                      type="number"
+                      type="text"
                       id="amount"
                       name="amount"
                       className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
