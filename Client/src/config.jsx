@@ -1,7 +1,7 @@
 // PRODUCTION CONTROL
 const apiUrls = {
   development: "http://localhost:8080",
-  production: "https://nexus.onrender.com",
+  production: "https://nexus-eam2.onrender.com",
 };
 
 export const getApiUrl = (env) => {
