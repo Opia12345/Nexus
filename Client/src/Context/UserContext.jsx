@@ -7,12 +7,14 @@ export const UserProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [lastname, setLastName] = useState("");
   const [userId, setUserId] = useState("");
+  const [userAcc, setUserAcc] = useState("");
 
   useEffect(() => {
     const storedUserEmail = localStorage.getItem("userEmail");
     const storedUserName = localStorage.getItem("LastName");
     const storedUserFirst = localStorage.getItem("FirstName");
     const storedUserId = localStorage.getItem("userID");
+    const storedUserAcc = localStorage.getItem("userAccount");
     if (storedUserEmail) {
       setUserEmail(storedUserEmail);
     }
@@ -24,6 +26,9 @@ export const UserProvider = ({ children }) => {
     }
     if (storedUserFirst) {
       setLastName(storedUserFirst);
+    }
+    if (storedUserAcc) {
+      setUserAcc(storedUserAcc);
     }
   }, []);
 
@@ -46,6 +51,10 @@ export const UserProvider = ({ children }) => {
     setLastName(name);
     localStorage.setItem("LastName", name);
   };
+  const updateUserAcc = (name) => {
+    setUserAcc(name);
+    localStorage.setItem("userAcc", name);
+  };
 
   return (
     <UserContext.Provider
@@ -58,6 +67,8 @@ export const UserProvider = ({ children }) => {
         updateUserId,
         lastname,
         updateUserLast,
+        userAcc,
+        updateUserAcc,
       }}
     >
       {children}

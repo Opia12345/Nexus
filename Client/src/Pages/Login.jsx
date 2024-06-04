@@ -20,8 +20,13 @@ const Login = () => {
   const [err, setErr] = useState(false);
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const { dispatch } = useAuthContext();
-  const { updateUserEmail, updateUsername, updateUserId, updateUserLast } =
-    useUserContext();
+  const {
+    updateUserEmail,
+    updateUsername,
+    updateUserId,
+    updateUserLast,
+    updateUserAcc,
+  } = useUserContext();
   const navigate = useNavigate();
 
   const validationSchema = Yup.object().shape({
@@ -48,6 +53,7 @@ const Login = () => {
         updateUsername(response.data.LastName);
         updateUserId(response.data.userID);
         updateUserLast(response.data.FirstName);
+        updateUserAcc(response.data.userAccount);
         dispatch({ type: "LOGIN", payload: response });
         navigate(`/dashboard`);
         resetForm();

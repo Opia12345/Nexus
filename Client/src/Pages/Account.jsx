@@ -27,7 +27,7 @@ const Account = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState(null);
-  const { username, lastname, userId } = useUserContext();
+  const { username, lastname, userId, userAcc } = useUserContext();
 
   const initialValues = {
     name: "",
@@ -261,11 +261,7 @@ const Account = () => {
         <div className="mt-8">
           <div>
             <h1 className="font-bold text-3xl">My Account</h1>
-            <p className="text-gray-500 mt-2">
-              {lastname}&nbsp;
-              {username}
-            </p>
-            <p className="text-gray-500 mt-2 text-sm">User ID: {userId}</p>
+            <p className="text-gray-500 mt-2 text-sm">Basic Account</p>
           </div>
         </div>
 
@@ -273,7 +269,14 @@ const Account = () => {
           <div className="bg-greenBlue h-6 w-6 p-12 rounded-full text-white flex items-center justify-center">
             <FontAwesomeIcon className="text-5xl" icon={faUserAlt} />
           </div>
-          <h1 className="font-black mt-3 text-2xl">USERS FULL NAME</h1>
+          <h1 className="font-black mt-3 text-2xl">
+            {username}&nbsp;
+            {lastname}
+          </h1>
+          <p className="text-gray-500 mt-2 text-sm">
+            Account Number: {userAcc}
+          </p>
+          <p className="text-gray-500 mt-2 text-sm">User ID: {userId}</p>
         </div>
 
         <div className="grid md:grid-cols-2 grid-cols-1 mt-8 gap-4">

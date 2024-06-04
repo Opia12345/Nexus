@@ -55,6 +55,7 @@ exports.signIn = async (req, res) => {
       LastName: existingUser.LastName,
       FirstName: existingUser.FirstName,
       userEmail: existingUser.Email,
+      userAccount: existingUser.accountNumber,
     };
     res.status(200).json(response);
   } catch (err) {
