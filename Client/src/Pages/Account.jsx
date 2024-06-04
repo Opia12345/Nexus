@@ -19,6 +19,10 @@ import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { getApiUrl } from "../config";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const Account = () => {
   const [logout, setLogout] = useState(false);
@@ -28,6 +32,9 @@ const Account = () => {
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState(null);
   const { username, lastname, userId, userAcc } = useUserContext();
+  const apiUrl = getApiUrl(process.env.NODE_ENV);
+  const navigate = useNavigate();
+  const { dispatch } = useAuthContext();
 
   const initialValues = {
     name: "",
@@ -91,6 +98,29 @@ const Account = () => {
       "transform translate-x-full opacity-0 transition-all duration-500 ease-in-out",
   };
 
+  const handleLogout = () => {
+    setIsSubmitting(true);
+    axios
+      .post(`${apiUrl}/logout`)
+      .then((response) => {
+        setErr(null);
+        localStorage.removeItem("user");
+        dispatch({ type: "LOGOUT", payload: response });
+        navigate(`/`);
+        window.location.reload();
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setErr(err.response.data.error || "An error occurred");
+          setTimeout(() => {
+            setErr(false);
+          }, 3000);
+          setIsSubmitting(false);
+        }
+      });
+  };
+
   return (
     <>
       <CSSTransition
@@ -123,7 +153,12 @@ const Account = () => {
             <FontAwesomeIcon className="text-2xl" icon={faSignOut} />
             <h5>Are you sure you want to logout?</h5>
             <div className="flex gap-4">
-              <button className="border rounded-md px-6 py-2">Logout</button>
+              <button
+                onClick={handleLogout}
+                className="border rounded-md px-6 py-2"
+              >
+                {isSubmitting ? "Logging Out..." : "Logout"}
+              </button>
               <button
                 onClick={() => setLogout(false)}
                 className="border rounded-md px-6 py-2 bg-white text-black transition-all ease-in-out duration-200"

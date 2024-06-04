@@ -14,6 +14,7 @@ import { useUserContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getApiUrl } from "../config";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const AccountSettings = () => {
   const [password, setPassword] = useState(false);
@@ -25,6 +26,8 @@ const AccountSettings = () => {
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const userId = JSON.parse(localStorage.getItem("user"))?.userId;
   const { updateUserEmail } = useUserContext();
+  const navigate = useNavigate();
+  const { dispatch } = useAuthContext();
 
   const emailSchema = Yup.object().shape({
     Email: Yup.string().email("Invalid email").required("Required"),
@@ -52,6 +55,35 @@ const AccountSettings = () => {
       "transform -translate-x-0 opacity-100 transition-all duration-500 ease-in-out",
     exitActive:
       "transform translate-x-full opacity-0 transition-all duration-500 ease-in-out",
+  };
+
+  const handleDelete = () => {
+    setIsSubmitting(true);
+    axios
+      .delete(`${apiUrl}/users/delete/${userId}`)
+      .then((response) => {
+        setErr(null);
+        setSuccess(response.data.message);
+        localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("LastName");
+        localStorage.removeItem("userID");
+        localStorage.removeItem("FirstName");
+        localStorage.removeItem("userAccount");
+        dispatch({ type: "LOGOUT", payload: response });
+        navigate(`/`);
+        window.location.reload();
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setErr(err.response.data.error || "An error occurred");
+          setTimeout(() => {
+            setErr(false);
+          }, 3000);
+          setIsSubmitting(false);
+        }
+      });
   };
 
   const submit = (values, { resetForm }) => {
@@ -116,7 +148,12 @@ const AccountSettings = () => {
             <FontAwesomeIcon className="text-2xl" icon={faTrashAlt} />
             <h5>Are you sure you want to delete your account?</h5>
             <div className="flex gap-4">
-              <button className="border rounded-md px-6 py-2">Delete</button>
+              <button
+                onClick={handleDelete}
+                className="border rounded-md px-6 py-2"
+              >
+                {isSubmitting ? "Deleting" : "Delete"}
+              </button>
               <button
                 onClick={() => setDel(false)}
                 className="border rounded-md px-6 py-2 bg-white text-black transition-all ease-in-out duration-200"
@@ -152,6 +189,7 @@ const AccountSettings = () => {
           <div>
             <h1 className="font-bold text-3xl">Account Settings</h1>
           </div>
+
           <div className="mt-8 col-span-2 bg-white shadow-lg md:w-[60%] rounded-lg p-8">
             <h2 className="font-semibold text-xl">Update Email</h2>
             <Formik
@@ -184,7 +222,7 @@ const AccountSettings = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-frenchBlue text-white px-4 py-2 rounded-md"
+                    className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:frenchBlue"
                   >
                     {isSubmitting ? "Updating" : "Update Email"}
                   </button>
@@ -258,7 +296,7 @@ const AccountSettings = () => {
                   <div className="mb-4">
                     <button
                       type="submit"
-                      className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:frenchBlue"
+                      className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:frenchBlue"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? "Updating..." : "Update Password"}
@@ -329,7 +367,7 @@ const AccountSettings = () => {
                 </h5>
                 <button
                   onClick={() => setDel(true)}
-                  className="bg-red-500 text-white px-4 py-2 transition ease-in-out duration-300 hover:bg-red-600 rounded-md"
+                  className="bg-red-500 text-white px-4 py-2 text-sm font-medium transition ease-in-out duration-300 hover:bg-red-600 rounded-md"
                 >
                   <FontAwesomeIcon icon={faTrashAlt} />
                   &nbsp; Delete Account

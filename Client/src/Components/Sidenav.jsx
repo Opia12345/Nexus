@@ -4,18 +4,28 @@ import {
   faPiggyBank,
   faPowerOff,
   faSignOut,
+  faTimesCircle,
   faUserAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { getApiUrl } from "../config";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const Sidenav = () => {
   const [activeLink, setActiveLink] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const [err, setErr] = useState(null);
   const [mobileNav, setMobileNav] = useState(false);
   const [logout, setLogout] = useState(false);
+  const apiUrl = getApiUrl(process.env.NODE_ENV);
+  const navigate = useNavigate();
+  const { dispatch } = useAuthContext();
 
   const myClassNames = {
     enter: "opacity-0",
@@ -27,6 +37,14 @@ const Sidenav = () => {
   const handleLinkClick = (link) => {
     setActiveLink(link);
     setMobileNav(false);
+  };
+
+  const styles = {
+    enter: "transform translate-x-full opacity-0",
+    enterActive:
+      "transform -translate-x-0 opacity-100 transition-all duration-500 ease-in-out",
+    exitActive:
+      "transform translate-x-full opacity-0 transition-all duration-500 ease-in-out",
   };
 
   useEffect(() => {
@@ -44,6 +62,29 @@ const Sidenav = () => {
     };
   }, []);
 
+  const handleLogout = () => {
+    setIsSubmitting(true);
+    axios
+      .post(`${apiUrl}/logout`)
+      .then((response) => {
+        setErr(null);
+        localStorage.removeItem("user");
+        dispatch({ type: "LOGOUT", payload: response });
+        navigate(`/`);
+        window.location.reload();
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        if (err.response) {
+          setErr(err.response.data.error || "An error occurred");
+          setTimeout(() => {
+            setErr(false);
+          }, 3000);
+          setIsSubmitting(false);
+        }
+      });
+  };
+
   return (
     <>
       <CSSTransition
@@ -57,7 +98,12 @@ const Sidenav = () => {
             <FontAwesomeIcon className="text-2xl" icon={faSignOut} />
             <h5>Are you sure you want to logout?</h5>
             <div className="flex gap-4">
-              <button className="border rounded-md px-6 py-2">Logout</button>
+              <button
+                onClick={handleLogout}
+                className="border rounded-md px-6 py-2"
+              >
+                {isSubmitting ? "Logging Out..." : "Logout"}
+              </button>
               <button
                 onClick={() => setLogout(false)}
                 className="border rounded-md px-6 py-2 bg-white text-black transition-all ease-in-out duration-200"
@@ -68,6 +114,14 @@ const Sidenav = () => {
           </div>
         </div>
       </CSSTransition>
+
+      <CSSTransition in={err} classNames={styles} timeout={300} unmountOnExit>
+        <div className="p-4 shadow-xl fixed right-3 bottom-20 border-s border-red-500 rounded-md flex items-center gap-4">
+          <FontAwesomeIcon className="text-red-500" icon={faTimesCircle} />
+          <h5>{err}.</h5>
+        </div>
+      </CSSTransition>
+
       {!mobile && (
         <>
           <nav className="w-[250px] h-screen py-10 bg-greenBlue text-white z-20 fixed left-0 top-0 p-8 flex flex-col justify-between">
