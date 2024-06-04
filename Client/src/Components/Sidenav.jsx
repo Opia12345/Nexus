@@ -126,8 +126,8 @@ const Sidenav = () => {
         <>
           <nav className="w-[250px] h-screen py-10 bg-greenBlue text-white z-20 fixed left-0 top-0 p-8 flex flex-col justify-between">
             <div className="">
-              <div className="flex gap-4 justify-center items-center mb-8">
-                <img src="/logo.png" alt="" />
+              <div className="flex gap-1 justify-center items-center mb-8">
+                <img src="/logo2.png" className="w-[50px]" alt="" />
                 <h5 className="font-black text-xl">Nexus Bank</h5>
               </div>
               <NavLink to="/dashboard" onClick={() => handleLinkClick("/")}>

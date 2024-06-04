@@ -73,13 +73,20 @@ const Login = () => {
   };
 
   return (
-    <div className="flex bg-[url('/bg2.png')] bg-cover bg-center justify-center bg-blend-darken items-center min-h-screen bg-gray-900/70 p-4">
+    <div className="flex bg-[url('/bg2.png')] bg-cover bg-center flex-col justify-center bg-blend-darken items-center min-h-screen bg-gray-900/70 p-4">
       <CSSTransition in={err} classNames={styles} timeout={300} unmountOnExit>
         <div className="p-4 shadow-xl bg-white fixed md:right-3 top-10 border-s border-red-500 rounded-md flex items-center gap-4">
           <FontAwesomeIcon className="text-red-500" icon={faTimesCircle} />
           <h5>{err}.</h5>
         </div>
       </CSSTransition>
+      <div className="flex items-center flex-col mb-8">
+        <div className="flex justify-center flex-col items-center">
+          <img src="/logo.png" className="w-[100px]" alt="" />
+          <h5 className="text-white font-black text-4xl">Nexus Bank</h5>
+        </div>
+        <small className="text-slate-400 font-semibold">Banking done the right way...</small>
+      </div>
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">Login to Your Account</h2>
         <Formik
