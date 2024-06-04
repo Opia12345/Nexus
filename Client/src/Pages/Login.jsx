@@ -31,7 +31,9 @@ const Login = () => {
 
   const validationSchema = Yup.object().shape({
     userID: Yup.string().required("User ID is required"),
-    Password: Yup.string().required("Password is required"),
+    Password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .required("Required"),
   });
 
   const styles = {

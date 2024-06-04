@@ -281,7 +281,7 @@ const Account = () => {
 
         <div className="grid md:grid-cols-2 grid-cols-1 mt-8 gap-4">
           <div>
-            <Link to="/accSettings">
+            <Link to="/accSettings/:userId">
               <div className="border rounded-md p-2 flex items-center gap-4 justify-between cursor-pointer">
                 <div className="flex items-center gap-4">
                   <FontAwesomeIcon icon={faUserAlt} />

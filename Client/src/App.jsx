@@ -104,7 +104,7 @@ function App() {
           }
         />
         <Route
-          path="/accSettings"
+          path="/accSettings/:userId"
           element={
             <PrivateRoute>
               <AccountSettings />
