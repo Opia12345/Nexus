@@ -20,9 +20,21 @@ const Transfers = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [pin, setPin] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [accountLocked, setAccountLocked] = useState(false);
   const [err, setErr] = useState(null);
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const userId = JSON.parse(localStorage.getItem("user"))?.userId;
+
+  useEffect(() => {
+    axios
+      .get(`${apiUrl}/account-status/${userId}`)
+      .then((response) => {
+        localStorage.setItem("is Locked", response.data.isLocked);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch account status", err);
+      });
+  }, []);
 
   const initialValues = {
     recipientName: "",
@@ -82,6 +94,11 @@ const Transfers = () => {
   };
 
   const onSubmit = (values, { resetForm }) => {
+    if (localStorage.getItem("is Locked") === true) {
+      setErr("Your account is locked. You cannot make transfers.");
+      return;
+    }
+
     const { amount } = values;
     const transferData = JSON.parse(localStorage.getItem("transferData")) || {
       count: 0,
@@ -362,7 +379,6 @@ const Transfers = () => {
             </div>
           </Link>
         </div>
-
         <div className="grid md:grid-cols-3 mt-8 grid-cols-1 order-2 md:gap-8">
           <div className="mt-8 col-span-2 bg-white shadow-lg rounded-lg p-8">
             <div className="mb-6 text-center">
