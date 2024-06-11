@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import axios from "axios";
 import { getApiUrl } from "../config";
+import CardForm from "../Components/CardForm";
 
 const Transfers = () => {
   const [passKey, setPassKey] = useState(false);
@@ -22,6 +23,7 @@ const Transfers = () => {
   const [success, setSuccess] = useState(false);
   const [accountLocked, setAccountLocked] = useState(false);
   const [err, setErr] = useState(null);
+  const [def, setDef] = useState("bank");
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
@@ -95,7 +97,7 @@ const Transfers = () => {
 
   const onSubmit = (values, { resetForm }) => {
     if (localStorage.getItem("is Locked") === "true") {
-      setErr("Your account is locked. You cannot make transfers.");
+      setErr("Your account is temporarily locked. Try again in 24 hours");
       return;
     }
 
@@ -197,6 +199,10 @@ const Transfers = () => {
           setIsSubmitting(false);
         }
       });
+  };
+
+  const handleClick = (link) => {
+    setDef(link);
   };
 
   const bankOptions = [
@@ -379,142 +385,169 @@ const Transfers = () => {
             </div>
           </Link>
         </div>
+
         <div className="grid md:grid-cols-3 mt-8 grid-cols-1 order-2 md:gap-8">
           <div className="mt-8 col-span-2 bg-white shadow-lg rounded-lg p-8">
             <div className="mb-6 text-center">
               <h1 className="font-bold text-4xl text-gray-900">
                 Make a Transfer
               </h1>
+
+              <div className="flex justify-center items-center mb-12">
+                <div className="flex items-center gap-2 bg-slate-200 rounded-lg mt-6">
+                  <h5
+                    onClick={() => handleClick("bank")}
+                    className={` ${
+                      def === "bank" ? "bg-frenchBlue text-white" : ""
+                    } cursor-pointer px-8 py-1 rounded-md font-semibold`}
+                  >
+                    Bank
+                  </h5>
+                  <h5
+                    onClick={() => handleClick("card")}
+                    className={` ${
+                      def === "card" ? "bg-frenchBlue text-white" : ""
+                    } cursor-pointer px-8 py-1 rounded-md font-semibold`}
+                  >
+                    Card
+                  </h5>
+                </div>
+              </div>
+
               <p className="text-gray-600 mt-2">
                 Send money to anyone with ease.
               </p>
             </div>
-            <Formik
-              initialValues={initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-            >
-              {() => (
-                <Form className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="recipientName"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Recipient Name
-                    </label>
-                    <Field
-                      type="text"
-                      id="recipientName"
-                      name="recipientName"
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                    <ErrorMessage
-                      name="recipientName"
-                      component="div"
-                      className="text-red-600 text-sm mt-1"
-                    />
-                  </div>
+            {def === "bank" && (
+              <Formik
+                initialValues={initialValues}
+                validationSchema={validationSchema}
+                onSubmit={onSubmit}
+              >
+                {() => (
+                  <Form className="space-y-6">
+                    <div>
+                      <label
+                        htmlFor="recipientName"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Recipient Name
+                      </label>
+                      <Field
+                        type="text"
+                        id="recipientName"
+                        name="recipientName"
+                        className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                      <ErrorMessage
+                        name="recipientName"
+                        component="div"
+                        className="text-red-600 text-sm mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <label
-                      htmlFor="accountNumber"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Account Number
-                    </label>
-                    <Field
-                      id="accountNumber"
-                      name="accountNumber"
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                    <ErrorMessage
-                      name="accountNumber"
-                      component="div"
-                      className="text-red-600 text-sm mt-1"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="accountNumber"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Account Number
+                      </label>
+                      <Field
+                        id="accountNumber"
+                        name="accountNumber"
+                        className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                      <ErrorMessage
+                        name="accountNumber"
+                        component="div"
+                        className="text-red-600 text-sm mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <label
-                      htmlFor="bank"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Bank
-                    </label>
-                    <Field
-                      as="select"
-                      id="bank"
-                      name="bank"
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    >
-                      {bankOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </Field>
-                    <ErrorMessage
-                      name="bank"
-                      component="div"
-                      className="text-red-600 text-sm mt-1"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="bank"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Bank
+                      </label>
+                      <Field
+                        as="select"
+                        id="bank"
+                        name="bank"
+                        className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      >
+                        {bankOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorMessage
+                        name="bank"
+                        component="div"
+                        className="text-red-600 text-sm mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <label
-                      htmlFor="amount"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Amount (Transfers above 20,000 will require a secure pass
-                      key)
-                    </label>
-                    <Field
-                      type="text"
-                      id="amount"
-                      name="amount"
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
-                    <ErrorMessage
-                      name="amount"
-                      component="div"
-                      className="text-red-600 text-sm mt-1"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="amount"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Amount (Transfers above 20,000 will require a secure
+                        pass key)
+                      </label>
+                      <Field
+                        type="text"
+                        id="amount"
+                        name="amount"
+                        className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                      <ErrorMessage
+                        name="amount"
+                        component="div"
+                        className="text-red-600 text-sm mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <label
-                      htmlFor="description"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Description (optional)
-                    </label>
-                    <Field
-                      as="textarea"
-                      id="description"
-                      name="description"
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      rows="3"
-                    />
-                    <ErrorMessage
-                      name="description"
-                      component="div"
-                      className="text-red-600 text-sm mt-1"
-                    />
-                  </div>
+                    <div>
+                      <label
+                        htmlFor="description"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Description (optional)
+                      </label>
+                      <Field
+                        as="textarea"
+                        id="description"
+                        name="description"
+                        className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        rows="3"
+                      />
+                      <ErrorMessage
+                        name="description"
+                        component="div"
+                        className="text-red-600 text-sm mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
-                    >
-                      {isSubmitting ? "Sending..." : "Send"}
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+                    <div>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out"
+                      >
+                        {isSubmitting ? "Sending..." : "Send"}
+                      </button>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            )}
+
+            <CardForm onSubmit={onSubmit} def={def} />
           </div>
 
           <div className="flex flex-col md:mt-0 mt-8 gap-4 order-first md:order-last items-center">
