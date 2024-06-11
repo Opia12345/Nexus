@@ -94,7 +94,7 @@ const Transfers = () => {
   };
 
   const onSubmit = (values, { resetForm }) => {
-    if (localStorage.getItem("is Locked") === true) {
+    if (localStorage.getItem("is Locked") === "true") {
       setErr("Your account is locked. You cannot make transfers.");
       return;
     }

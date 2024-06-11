@@ -31,7 +31,7 @@ const Account = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState(null);
-  const { username, lastname, userId, userAcc } = useUserContext();
+  const { username, lastname, userId } = useUserContext();
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const navigate = useNavigate();
   const { dispatch } = useAuthContext();
@@ -120,6 +120,7 @@ const Account = () => {
         }
       });
   };
+  const userAcc = localStorage.getItem("userAcc");
 
   return (
     <>

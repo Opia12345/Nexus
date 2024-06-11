@@ -78,7 +78,7 @@ exports.KeyAuthorization = async (req, res) => {
       if (Date.now() < existingUser.lockUntil) {
         return res.status(403).json({
           error:
-            "Account is locked due to multiple failed attempts. Try again later.",
+            "Account is locked due to multiple failed attempts. Try again in 24 hours.",
         });
       } else {
         existingUser.isLocked = false;
