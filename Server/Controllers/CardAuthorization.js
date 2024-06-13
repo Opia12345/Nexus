@@ -17,7 +17,7 @@ const Validation = yup.object().shape({
   Password: yup.string().required("Password is required"),
 });
 
-exports.KeyAuthorization = async (req, res) => {
+exports.CardAuthorization = async (req, res) => {
   const { PassKey, Password, transferDetails } = req.body;
   const { userId } = req.params;
 
@@ -175,27 +175,9 @@ exports.KeyAuthorization = async (req, res) => {
               <p>You have successfully completed a transfer on your Nexus account. Below are the details:</p>
               <table border="0" cellpadding="10" cellspacing="0" width="100%" style="background: #f9f9f9; border-collapse: collapse; margin: 20px 0;">
                 <tr>
-                  <td style="border: 1px solid #ddd;">Recipient Name:</td>
-                  <td style="border: 1px solid #ddd;">${
-                    transferDetails.recipientName
-                  }</td>
-                </tr>
-                <tr>
-                  <td style="border: 1px solid #ddd;">Account Number:</td>
-                  <td style="border: 1px solid #ddd;">${
-                    transferDetails.accountNumber
-                  }</td>
-                </tr>
-                <tr>
                   <td style="border: 1px solid #ddd;">Amount:</td>
                   <td style="border: 1px solid #ddd;">${
                     transferDetails.amount
-                  }</td>
-                </tr>
-                <tr>
-                  <td style="border: 1px solid #ddd;">Description:</td>
-                  <td style="border: 1px solid #ddd;">${
-                    transferDetails.description
                   }</td>
                 </tr>
                 <tr>
