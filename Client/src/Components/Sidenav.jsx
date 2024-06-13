@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getApiUrl } from "../config";
 import { useAuthContext } from "../Hooks/useAuthContext";
+import LogoutTimer from "./LogoutTimer";
 
 const Sidenav = () => {
   const [activeLink, setActiveLink] = useState(null);
@@ -85,8 +86,14 @@ const Sidenav = () => {
       });
   };
 
+  const handleAutoLogout = () => {
+    handleLogout();
+  };
+
   return (
     <>
+      <LogoutTimer onLogout={handleAutoLogout} />
+
       <CSSTransition
         in={logout}
         classNames={myClassNames}
