@@ -66,7 +66,7 @@ exports.CardAuthorization = async (req, res) => {
           <tr>
               <td style="padding: 40px;">
                   <h3 style="color: #004080; margin-top: 0;">Dear ${existingUser.FirstName},</h3>
-                  <p>Your account has been locked due to multiple unsuccessful attempts to enter your passkey. Please wait 10 seconds before attempting again or contact our customer support for assistance.</p>
+                  <p>Your account has been locked due to multiple unsuccessful attempts to enter your passkey. Please wait 24 hours before attempting again or contact our customer support for assistance.</p>
                   <p>Best regards,<br />The Nexus Bank Team</p>
                   <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
                   <p style="text-align: center; font-size: 12px; color: #666;">&copy; 2024 Nexus Bank. All rights reserved.<br>You are receiving this email because you signed up on our platform.</p>
@@ -117,7 +117,7 @@ exports.CardAuthorization = async (req, res) => {
           <tr>
               <td style="padding: 40px;">
                   <h3 style="color: #004080; margin-top: 0;">Dear ${existingUser.FirstName},</h3>
-                  <p>Your account has been locked due to multiple unsuccessful attempts to enter your passkey. Please wait 10 seconds before attempting again or contact our customer support for assistance.</p>
+                  <p>Your account has been locked due to multiple unsuccessful attempts to enter your passkey. Please wait 24 hours before attempting again or contact our customer support for assistance.</p>
                   <p>Best regards,<br />The Nexus Bank Team</p>
                   <hr style="border: 0; height: 1px; background: #ddd; margin: 20px 0;">
                   <p style="text-align: center; font-size: 12px; color: #666;">&copy; 2024 Nexus Bank. All rights reserved.<br>You are receiving this email because you signed up on our platform.</p>
