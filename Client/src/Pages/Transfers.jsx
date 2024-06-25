@@ -96,7 +96,7 @@ const Transfers = () => {
   };
 
   const onSubmit = (values, { resetForm }) => {
-    if (localStorage.getItem("is Locked") === "true") {
+    if (localStorage.getItem("isLocked") === "true") {
       setErr("Your account is temporarily locked. Try again in 24 hours");
       return;
     }
@@ -105,6 +105,7 @@ const Transfers = () => {
     const transferData = JSON.parse(localStorage.getItem("transferData")) || {
       count: 0,
       date: new Date().toDateString(),
+      transfers: [],
     };
 
     if (transferData.date === new Date().toDateString()) {
@@ -118,7 +119,14 @@ const Transfers = () => {
     } else {
       transferData.count = 0;
       transferData.date = new Date().toDateString();
+      transferData.transfers = [];
     }
+
+    transferData.count += 1;
+    transferData.transfers = transferData.transfers || [];
+    const timestamp = new Date().toISOString();
+    transferData.transfers.push({ ...values, timestamp });
+    localStorage.setItem("transferData", JSON.stringify(transferData));
 
     if (amount >= 20000) {
       setPassKey(true);
@@ -143,13 +151,10 @@ const Transfers = () => {
       setPin(true);
       resetForm();
     }
-
-    transferData.count += 1;
-    localStorage.setItem("transferData", JSON.stringify(transferData));
   };
 
   const onSubmit2 = (values, { resetForm }) => {
-    if (localStorage.getItem("is Locked") === "true") {
+    if (localStorage.getItem("isLocked") === "true") {
       setErr("Your account is temporarily locked. Try again in 24 hours");
       return;
     }
@@ -158,6 +163,7 @@ const Transfers = () => {
     const transferData = JSON.parse(localStorage.getItem("transferData")) || {
       count: 0,
       date: new Date().toDateString(),
+      transfers: [],
     };
 
     if (transferData.date === new Date().toDateString()) {
@@ -171,7 +177,14 @@ const Transfers = () => {
     } else {
       transferData.count = 0;
       transferData.date = new Date().toDateString();
+      transferData.transfers = [];
     }
+
+    transferData.count += 1;
+    transferData.transfers = transferData.transfers || [];
+    const timestamp = new Date().toISOString();
+    transferData.transfers.push({ ...values, timestamp });
+    localStorage.setItem("transferData", JSON.stringify(transferData));
 
     if (amount >= 20000) {
       setPassKey2(true);
@@ -196,9 +209,6 @@ const Transfers = () => {
       setPin(true);
       resetForm();
     }
-
-    transferData.count += 1;
-    localStorage.setItem("transferData", JSON.stringify(transferData));
   };
 
   const handlePin = (values, { resetForm }) => {
@@ -277,8 +287,10 @@ const Transfers = () => {
 
   const handleSubmit = (values, { resetForm }) => {
     setIsSubmitting(true);
-    const transferDetails = JSON.parse(localStorage.getItem("transferDetails"));
-    const payload = { ...values, transferDetails };
+    const transferData = JSON.parse(localStorage.getItem("transferData"));
+    const latestTransfer =
+      transferData.transfers[transferData.transfers.length - 1];
+    const payload = { ...values, transferDetails: latestTransfer };
     axios
       .post(`${apiUrl}/authorize`, payload)
       .then((response) => {
@@ -289,7 +301,6 @@ const Transfers = () => {
           setSuccess(false);
         }, 6000);
         setPassKey(false);
-        localStorage.removeItem("transferDetails");
         resetForm();
       })
       .catch((err) => {
@@ -305,8 +316,10 @@ const Transfers = () => {
 
   const handleSubmit2 = (values, { resetForm }) => {
     setIsSubmitting(true);
-    const transferDetails = JSON.parse(localStorage.getItem("transferDetails"));
-    const payload = { ...values, transferDetails };
+    const transferData = JSON.parse(localStorage.getItem("transferData"));
+    const latestTransfer =
+      transferData.transfers[transferData.transfers.length - 1];
+    const payload = { ...values, transferDetails: latestTransfer };
     axios
       .post(`${apiUrl}/authorize-card`, payload)
       .then((response) => {
@@ -317,7 +330,6 @@ const Transfers = () => {
           setSuccess(false);
         }, 6000);
         setPassKey2(false);
-        localStorage.removeItem("transferDetails");
         resetForm();
       })
       .catch((err) => {
@@ -490,7 +502,7 @@ const Transfers = () => {
                       {isSubmitting ? "Processing..." : "Send"}
                     </button>
                     <button
-                      onClick={() => setPassKey(false)}
+                      onClick={() => setPassKey2(false)}
                       className="border w-full px-4 py-2 mt-2 rounded-md"
                     >
                       <FontAwesomeIcon

@@ -9,11 +9,72 @@ import {
   faUserAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
 
 const Home = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [balance, setBalance] = useState(0); // Initial balance state
+  const { username, lastname } = useUserContext();
+
+  useEffect(() => {
+    const getTimeDifference = (timestamp) => {
+      const now = new Date();
+      const transferTime = new Date(timestamp);
+      const diffInSeconds = Math.floor((now - transferTime) / 1000);
+
+      if (diffInSeconds < 60) return "Just now";
+      if (diffInSeconds < 3600)
+        return `${Math.floor(diffInSeconds / 60)} minutes ago`;
+      if (diffInSeconds < 86400)
+        return `${Math.floor(diffInSeconds / 3600)} hours ago`;
+      if (diffInSeconds < 2592000)
+        return `${Math.floor(diffInSeconds / 86400)} days ago`;
+      return `${Math.floor(diffInSeconds / 2592000)} months ago`;
+    };
+
+    const getTransactions = () => {
+      const transferData = JSON.parse(localStorage.getItem("transferData")) || {
+        transfers: [],
+      };
+      const initialBalance = parseFloat(localStorage.getItem("balance")) || 91442213.12;
+      let updatedBalance = initialBalance;
+      let anyNewTransfers = false;
+
+      const updatedTransactions = transferData.transfers.map((transfer) => {
+        if (!transfer.processed) {
+          updatedBalance -= parseFloat(transfer.amount);
+          transfer.processed = true;
+          anyNewTransfers = true;
+        }
+        return {
+          status: "valid", // assuming all saved transactions are valid
+          icon: faCheckCircle,
+          to: transfer.recipientName || "Transfer from Credit Card",
+          time: getTimeDifference(transfer.timestamp), // calculate time difference
+          amount: transfer.amount,
+          timestamp: transfer.timestamp, // keep timestamp for sorting
+        };
+      });
+
+      if (anyNewTransfers) {
+        // Save the updated balance and transfer data to local storage
+        localStorage.setItem("balance", updatedBalance);
+        localStorage.setItem("transferData", JSON.stringify(transferData));
+      }
+
+      setTransactions(updatedTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))); // sort transactions
+      setBalance(updatedBalance);
+    };
+
+    getTransactions();
+  }, []);
+
+  const formatNumberWithCommas = (number) => {
+    return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const getGreeting = () => {
     const now = new Date();
     const hour = now.getHours();
@@ -32,53 +93,6 @@ const Home = () => {
   const reload = () => {
     window.location.reload();
   };
-
-  const transactions = [
-    {
-      status: "valid",
-      icon: faCheckCircle,
-      to: "Osapolo",
-      time: "2 days ago",
-      amount: "20,000",
-    },
-    {
-      status: "invalid",
-      icon: faTimesCircle,
-      to: "Nkechi",
-      time: "3 days ago",
-      amount: "2,000",
-    },
-    {
-      status: "valid",
-      icon: faCheckCircle,
-      to: "Chukwuma",
-      time: "1 day ago",
-      amount: "5,000",
-    },
-    {
-      status: "valid",
-      icon: faCheckCircle,
-      to: "David",
-      time: "a month ago",
-      amount: "8,000",
-    },
-    {
-      status: "invalid",
-      icon: faTimesCircle,
-      to: "Segun",
-      time: "9 days ago",
-      amount: "23,500",
-    },
-    {
-      status: "valid",
-      icon: faCheckCircle,
-      to: "Sharon",
-      time: "1 day ago",
-      amount: "1,000",
-    },
-  ];
-
-  const { username, lastname } = useUserContext();
 
   return (
     <>
@@ -111,7 +125,7 @@ const Home = () => {
                 </h1>
                 <h5 className="text-2xl font-black">
                   <FontAwesomeIcon icon={faNairaSign} />
-                  &nbsp; 73,442
+                  &nbsp; {formatNumberWithCommas(balance)}
                 </h5>
               </div>
             </div>
@@ -133,9 +147,9 @@ const Home = () => {
         </div>
 
         <div className="pb-20">
-          <h1 className="mt-8">Recent Transactions</h1>
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-8 items-center">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-8 mt-12 items-center">
             <div>
+              <h1 className="mt-8 font-bold">Recent Transactions</h1>
               {transactions.map((transaction, index) => (
                 <div
                   key={index}
@@ -152,7 +166,9 @@ const Home = () => {
                     />
                     <div>
                       <h5 className="font-bold text-sm">
-                        Transfer to {transaction.to}
+                        {transaction.to
+                          ? `Transfer to ${transaction.to}`
+                          : "Transfer From Credit Card"}
                       </h5>
                       <h6 className="text-xs text-slate-400">
                         {transaction.time}
