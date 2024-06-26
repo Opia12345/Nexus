@@ -5,6 +5,7 @@ import {
   faNairaSign,
   faRotate,
   faShield,
+  faTemperatureEmpty,
   faTimesCircle,
   faUserAlt,
 } from "@fortawesome/free-solid-svg-icons";
@@ -38,7 +39,8 @@ const Home = () => {
       const transferData = JSON.parse(localStorage.getItem("transferData")) || {
         transfers: [],
       };
-      const initialBalance = parseFloat(localStorage.getItem("balance")) || 91442213.12;
+      const initialBalance =
+        parseFloat(localStorage.getItem("balance")) || 91442213.12;
       let updatedBalance = initialBalance;
       let anyNewTransfers = false;
 
@@ -64,7 +66,11 @@ const Home = () => {
         localStorage.setItem("transferData", JSON.stringify(transferData));
       }
 
-      setTransactions(updatedTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))); // sort transactions
+      setTransactions(
+        updatedTransactions.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        )
+      ); // sort transactions
       setBalance(updatedBalance);
     };
 
@@ -150,37 +156,45 @@ const Home = () => {
           <div className="grid md:grid-cols-2 grid-cols-1 gap-8 mt-12 items-center">
             <div>
               <h1 className="mt-8 font-bold">Recent Transactions</h1>
-              {transactions.map((transaction, index) => (
-                <div
-                  key={index}
-                  className="border rounded-md mt-2 p-2 flex items-center justify-between"
-                >
-                  <div className="flex items-center gap-4">
-                    <FontAwesomeIcon
-                      className={
-                        transaction.status === "valid"
-                          ? "text-green-500"
-                          : "text-red-500"
-                      }
-                      icon={transaction.icon}
-                    />
-                    <div>
-                      <h5 className="font-bold text-sm">
-                        {transaction.to
-                          ? `Transfer to ${transaction.to}`
-                          : "Transfer From Credit Card"}
-                      </h5>
-                      <h6 className="text-xs text-slate-400">
-                        {transaction.time}
-                      </h6>
+              {transactions.length > 0 ? (
+                transactions.map((transaction, index) => (
+                  <div
+                    key={index}
+                    className="border rounded-md mt-2 p-2 flex items-center justify-between"
+                  >
+                    <div className="flex items-center gap-4">
+                      <FontAwesomeIcon
+                        className={
+                          transaction.status === "valid"
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }
+                        icon={transaction.icon}
+                      />
+                      <div>
+                        <h5 className="font-bold text-sm">
+                          {transaction.to
+                            ? `Transfer to ${transaction.to}`
+                            : "Transfer From Credit Card"}
+                        </h5>
+                        <h6 className="text-xs text-slate-400">
+                          {transaction.time}
+                        </h6>
+                      </div>
                     </div>
+                    <span className="text-xs flex items-center text-slate-400">
+                      <FontAwesomeIcon icon={faNairaSign} />
+                      <h5>{transaction.amount}</h5>
+                    </span>
                   </div>
-                  <span className="text-xs flex items-center text-slate-400">
-                    -<FontAwesomeIcon icon={faNairaSign} />
-                    <h5>{transaction.amount}</h5>
-                  </span>
+                ))
+              ) : (
+                <div className="flex justify-center items-center mt-[40%]">
+                  <h5 className="text-md font-semibold">
+                    No transactions yet...
+                  </h5>
                 </div>
-              ))}
+              )}
             </div>
             <div className="flex items-center justify-center flex-col">
               <img src="inv.svg" className="w-[20em]" alt="" />

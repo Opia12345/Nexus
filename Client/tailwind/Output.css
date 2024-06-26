@@ -670,6 +670,14 @@ video {
   margin-top: 2rem;
 }
 
+.mt-\[50\%\] {
+  margin-top: 50%;
+}
+
+.mt-\[40\%\] {
+  margin-top: 40%;
+}
+
 .block {
   display: block;
 }
