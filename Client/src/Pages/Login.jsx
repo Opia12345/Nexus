@@ -85,7 +85,9 @@ const Login = () => {
           <img src="/logo.png" className="w-[100px]" alt="" />
           <h5 className="text-white font-black text-4xl">Nexus Bank</h5>
         </div>
-        <small className="text-slate-400 font-semibold">Banking done the right way...</small>
+        <small className="text-slate-400 font-semibold">
+          Banking done the right way...
+        </small>
       </div>
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">Login to Your Account</h2>
@@ -165,6 +167,9 @@ const Login = () => {
             Forgot Password?
           </h5>
         </Link>
+        <small className="flex justify-center text-gray-400 mt-4">
+          Built and designed by Uche Chinyere
+        </small>
       </div>
     </div>
   );

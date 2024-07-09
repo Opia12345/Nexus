@@ -192,15 +192,22 @@ const Sidenav = () => {
                 </span>
               </NavLink>
             </div>
-            <span
-              onClick={() => setLogout(true)}
-              className={`cursor-pointer p-2 ${
-                activeLink === "//" ? "border-s bg-slate-200/20 rounded-md" : ""
-              } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
-            >
-              <FontAwesomeIcon icon={faPowerOff} />
-              <h5>Logout</h5>
-            </span>
+            <div>
+              <span
+                onClick={() => setLogout(true)}
+                className={`cursor-pointer p-2 ${
+                  activeLink === "//"
+                    ? "border-s bg-slate-200/20 rounded-md"
+                    : ""
+                } hover:bg-slate-200/5 transition ease-in-out duration-300 flex items-center gap-4`}
+              >
+                <FontAwesomeIcon icon={faPowerOff} />
+                <h5>Logout</h5>
+              </span>
+              <small className="flex justify-center text-gray-200 mt-4">
+                Built and designed by Uche Chinyere
+              </small>
+            </div>
           </nav>
         </>
       )}
