@@ -167,9 +167,6 @@ const Login = () => {
             Forgot Password?
           </h5>
         </Link>
-        <small className="flex justify-center text-gray-400 mt-4">
-          Built and designed by Uche Chinyere
-        </small>
       </div>
     </div>
   );

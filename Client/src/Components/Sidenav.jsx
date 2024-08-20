@@ -204,9 +204,6 @@ const Sidenav = () => {
                 <FontAwesomeIcon icon={faPowerOff} />
                 <h5>Logout</h5>
               </span>
-              <small className="flex justify-center text-gray-200 mt-4">
-                Built and designed by Uche Chinyere
-              </small>
             </div>
           </nav>
         </>

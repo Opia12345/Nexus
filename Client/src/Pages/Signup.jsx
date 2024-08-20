@@ -220,9 +220,6 @@ const Signup = () => {
             <h5 className="text-frenchBlue hover:text-frenchBlue/90">Log in</h5>
           </Link>
         </p>
-        <small className="flex justify-center text-gray-400 mt-4">
-          Built and designed by Uche Chinyere
-        </small>
       </div>
     </div>
   );
