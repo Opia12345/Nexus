@@ -20,7 +20,7 @@ const ResetPassword = () => {
   const [err, setErr] = useState(false);
   const navigate = useNavigate();
   const apiUrl = getApiUrl(process.env.NODE_ENV);
-  const userId = JSON.parse(localStorage.getItem("user"))?.userId;
+  const userId = localStorage.getItem("userId");
 
   const validationSchema = Yup.object({
     Password: Yup.string()

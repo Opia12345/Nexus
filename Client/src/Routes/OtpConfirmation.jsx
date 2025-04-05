@@ -15,7 +15,7 @@ const OtpConfirmation = () => {
   const [err, setErr] = useState(false);
   const apiUrl = getApiUrl(process.env.NODE_ENV);
   const navigate = useNavigate();
-  const userId = JSON.parse(localStorage.getItem("user"))?.userId;
+  const userId = localStorage.getItem("userId");
 
   const styles = {
     enter: "transform translate-x-full opacity-0",

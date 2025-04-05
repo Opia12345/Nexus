@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 const ForgotPassword = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [err, setErr] = useState(false);
-  const userId = JSON.parse(localStorage.getItem("user"))?.userId;
   const navigate = useNavigate();
 
   const apiUrl = getApiUrl(process.env.NODE_ENV);
@@ -35,6 +34,8 @@ const ForgotPassword = () => {
       .post(`${apiUrl}/passwordReset`, values)
       .then((response) => {
         setErr(null);
+        const userId = response.data.userId;
+        localStorage.setItem("userId", userId);
         navigate(`/otpConfirmation/${userId}`);
         resetForm();
         setIsSubmitting(false);
@@ -97,7 +98,7 @@ const ForgotPassword = () => {
               </div>
               <div className="mb-4">
                 <button
-                disabled={isSubmitting}
+                  disabled={isSubmitting}
                   type="submit"
                   className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-frenchBlue hover:bg-frenchBlue/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-frenchBlue"
                 >
