@@ -20,7 +20,7 @@ import PrivateRoute from "./Routes/PrivateRoute";
 function App() {
   const redirect = useNavigate();
   const route = useLocation();
-  const userId = localStorage.getItem("userId");
+  const userId = JSON.parse(localStorage.getItem("user"))?.userId;
 
   useEffect(() => {
     if (
